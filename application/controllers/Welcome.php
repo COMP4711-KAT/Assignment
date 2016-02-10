@@ -12,6 +12,8 @@ class Welcome extends Application {
 
     function __construct() {
         parent::__construct();
+
+        $this->load->model('players');
     }
 
     //-------------------------------------------------------------
@@ -19,10 +21,11 @@ class Welcome extends Application {
     //-------------------------------------------------------------
 
     function index() {
-        $this->data['pageTitle'] = 'Welcome';
-
+        $this->data['pageTitle'] = 'Homepage';
         // this is the view we want shown
         $this->data['pagebody'] = 'homepage';
+
+        $this->data['players'] = $this->players->all();
 
         $this->render();
     }

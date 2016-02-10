@@ -6,3 +6,4 @@
 !*/cache/.htaccess
 .idea
 /nbproject/private/
+index.php

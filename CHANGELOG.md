@@ -14,3 +14,10 @@
 * Added the Stocks model
 * Displays each Stock's name and value with a placeholder for a link
     to the stock's history page.
+
+### v.1.4 (2016-09-02)
+* Added a new link in the menu for profiles
+* Added Portfolios model
+* Display transactions made by a single player
+* Display a dropdown that when clicked goes to specified player
+* Added routes for profiles

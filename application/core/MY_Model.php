@@ -101,6 +101,7 @@ interface Active_record {
      * @return mixed The selected records, as an array of records
      */
     function some($what, $which);
+
 }
 
 /**

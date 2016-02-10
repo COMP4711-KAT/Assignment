@@ -14,6 +14,7 @@ class Welcome extends Application {
         parent::__construct();
 
         $this->load->model('players');
+        $this->load->model('stocks');
     }
 
     //-------------------------------------------------------------
@@ -26,6 +27,7 @@ class Welcome extends Application {
         $this->data['pagebody'] = 'homepage';
 
         $this->data['players'] = $this->players->all();
+        $this->data['stocks'] = $this->stocks->all();
 
         $this->render();
     }

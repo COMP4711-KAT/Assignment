@@ -10,7 +10,12 @@
 * Added the Players model
 * Display the Player names and Cash on the home page
 
-### v.1.3 (2016-09-02)
+## v.1.3 (2016-09-02)
+* Added the Stocks model
+* Displays each Stock's name and value with a placeholder for a link
+    to the stock's history page.
+
+### v.1.4 (2016-09-02)
 * Added a new link in the menu for profiles
 * Added Portfolios model
 * Display transactions made by a single player

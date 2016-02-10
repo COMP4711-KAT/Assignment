@@ -13,4 +13,20 @@
             {/players}
         </table>
     </div>
+    <div class="col-md-4">
+        <table class="table">
+            <tr>
+                <th>Stock</th>
+                <th>Value</th>
+                <th>Link</th>
+            </tr>
+            {stocks}
+            <tr>
+                <td>{Name}</td>
+                <td>{Value}</td>
+                <td><a href="#">Stock History</a></td>
+            </tr>
+            {/stocks}
+        </table>
+    </div>
 </div>

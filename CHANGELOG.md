@@ -10,3 +10,7 @@
 * Added the Players model
 * Display the Player names and Cash on the home page
 
+## v.1.3 (2016-09-02)
+* Added the Stocks model
+* Displays each Stock's name and value with a placeholder for a link
+    to the stock's history page.

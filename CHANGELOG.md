@@ -10,3 +10,9 @@
 * Added the Players model
 * Display the Player names and Cash on the home page
 
+### v.1.3 (2016-09-02)
+* Added a new link in the menu for profiles
+* Added Portfolios model
+* Display transactions made by a single player
+* Display a dropdown that when clicked goes to specified player
+* Added routes for profiles

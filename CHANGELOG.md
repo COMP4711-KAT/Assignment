@@ -21,3 +21,10 @@
 * Display transactions made by a single player
 * Display a dropdown that when clicked goes to specified player
 * Added routes for profiles
+
+### v.1.5 (2016-10-02)
+* Added a links to users in homepage
+* Added Current holdings for each user and updates with transactions
+* Reformatted the profile page to look cleaner
+* Added another view to handle having it click to the profile link, and
+  looking for another guy as it used the current directory

@@ -7,7 +7,7 @@
             </tr>
             {players}
             <tr>
-                <td>{Player}</td>
+                <td><a href="profile/{Player}">{Player}</a></td>
                 <td>{Cash}</td>
             </tr>
             {/players}

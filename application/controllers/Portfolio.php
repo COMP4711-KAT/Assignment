@@ -35,17 +35,24 @@ class Portfolio extends Application {
      * shows ____(something), right now just shows all player transactions
      */
     function index() {
-        $this->data['pageTitle'] = 'Profile';
-        // this is the view we want shown
-        $this->data['pagebody'] = 'profile';
 
-        //Data to fill in dropdown menu
-        $this->data['player_names'] = $this->players->all();
+        //If there is no user logged in
+        if(!isset($_SESSION['user'])) {
+            $this->data['pageTitle'] = 'Profile of Donald' ;
+            // this is the view we want shown
+            $this->data['pagebody'] = 'user_profile';
 
-        //Data to fill transactions table
-        $this->data['players'] = $this->portfolios->all();
+            //Data to fill in dropdown menu
+            $this->data['player_names'] = $this->players->all();
 
-        $this->render();
+            //Data to fill transactions table, Donald for now
+            $this->data['players'] = $this->portfolios->some("Player", 'Donald');
+
+            //Player's current holdings in each stock, Donald for now
+            $this->data['stocks']= $this->portfolios->get_player_stocks("Player", 'Donald');
+
+            $this->render();
+        }
     }
 
     /**
@@ -53,6 +60,7 @@ class Portfolio extends Application {
      * @param $player the name of the player
      */
     function one($player) {
+
         $name = ucfirst($player);
 
         $this->data['pageTitle'] = 'Profile of ' . $name;
@@ -60,12 +68,14 @@ class Portfolio extends Application {
         // this is the view we want shown
         $this->data['pagebody'] = 'profile';
 
+        //Player's current holdings in each stock
+        $this->data['stocks']= $this->portfolios->get_player_stocks("Player", $player);
+
         //Data to fill in dropdown menu
         $this->data['player_names'] = $this->players->all();
 
         //Data to fill transactions table
         $this->data['players'] = $this->portfolios->some("Player", $player);
-
 
         $this->render();
     }

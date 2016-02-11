@@ -7,7 +7,7 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                 {player_names}
-                <li><a href="./{Player}">{Player}</a></li>
+                <li><a href="profile/{Player}">{Player}</a></li>
                 {/player_names}
             </ul>
         </div>

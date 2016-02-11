@@ -54,3 +54,4 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['profile'] = 'portfolio';
 $route['profile/(:any)'] = 'portfolio/one/$1';
+$route['stock/(:any)'] = 'stock/stock/$1';

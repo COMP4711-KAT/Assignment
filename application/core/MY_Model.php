@@ -254,11 +254,20 @@ class MY_Model extends CI_Model implements Active_Record {
     function highest() {
         $this->db->select_max($this->_keyField);
         $query = $this->db->get($this->_tableName);
+        var_dump($query);
         $result = $query->result();
+        var_dump($result);
         if (count($result) > 0)
-            return $result[0]->num;
+            return $result[0]->Code;
         else
             return null;
     }
 
+    // Returns most recent records.
+    function recent() {
+        $this->db->order_by('Datetime', 'desc');
+        $this->db->limit(1);
+        $query = $this->db->get($this->_tableName);
+        return $query->result();
+    }
 }

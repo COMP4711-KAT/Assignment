@@ -5,6 +5,7 @@ $config['menu_choices'] = array(
     'menudata' => array(
         array('name' => 'Home', 'link' => '/'),
         array('name' => 'Profile', 'link' => '/profile'),
+        array('name' => 'Stocks', 'link' => '/stock'),
     )
 );
 

@@ -28,3 +28,11 @@
 * Reformatted the profile page to look cleaner
 * Added another view to handle having it click to the profile link, and
   looking for another guy as it used the current directory
+
+### v.1.6 (2016-11-02)
+* Added a links to stocks in homepage
+* Routed the pages so it doesn't use controller routing
+* Got rid of using model values within controller
+* Got recently active stock and use that to get its history and transactions
+* Stocks history page implemented
+* Got rid of a view that was not needed

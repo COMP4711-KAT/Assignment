@@ -7,7 +7,7 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                 {stocks_list}
-                <li><a href="/stock/history/{Code}">{Code}</a></li>
+                <li><a href="/stock/{Code}">{Code}</a></li>
                 {/stocks_list}
             </ul>
         </div>

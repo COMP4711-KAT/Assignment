@@ -24,7 +24,7 @@
             <tr>
                 <td>{Name}</td>
                 <td>{Value}</td>
-                <td><a href="#">Stock History</a></td>
+                <td><a href="/stock/{Code}">Stock History</a></td>
             </tr>
             {/stocks}
         </table>

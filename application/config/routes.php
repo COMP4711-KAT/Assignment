@@ -56,3 +56,5 @@ $route['profile'] = 'portfolio';
 $route['profile/(:any)'] = 'portfolio/one/$1';
 $route['stock'] = 'stock';
 $route['stock/(:any)'] = 'stock/history/$1';
+$route['login'] = 'portfolio/login';
+$route['logout'] = 'portfolio/logout';

@@ -26,6 +26,18 @@ class Application extends CI_Controller {
 		$this->data['title'] = 'Stock Ticker';	// our default title
 		$this->errors = array();
 		$this->data['pageTitle'] = 'Stock Ticker';   // our default page
+                
+                // check for user log in then change navbar accordingly
+                $this->load->library('session');
+                $navbar = $this->config->item('menu_choices');
+                if ($this->session->userdata('user') !== null) {
+                    $navbar['menudata'][3] 
+                        = array('name' => 'Logout', 'link' => '/logout');
+                } else {
+                    $navbar['menudata'][3] 
+                        = array('name' => 'Login', 'link' => '/login');
+                }
+                $this->config->set_item('menu_choices', $navbar);
 	}
 
 	/**

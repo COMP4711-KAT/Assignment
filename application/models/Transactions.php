@@ -3,6 +3,17 @@
  * The Transactions model is responsible for the transactions table in the database.
  */
 class Transactions extends MY_Model {
+
+    //Current Holdings that are each initialized to 0
+     var $stocks = array(
+        array('stock' => 'BOND', 'name' => 'Bonds', 'value' => 0),
+        array('stock' => 'GOLD', 'name' => 'Gold', 'value' => 0),
+        array('stock' => 'GRAN', 'name' => 'Grain', 'value' => 0),
+        array('stock' => 'IND', 'name' => 'Industrial', 'value' => 0),
+        array('stock' => 'OIL', 'name' => 'Oil', 'value' => 0),
+        array('stock' => 'TECH', 'name' => 'Tech', 'value' => 0)
+    );
+
     /**
      * Transactions constructor.
      * Takes the table name (Transactions) and primary key (Player) as arguments.
@@ -22,16 +33,6 @@ class Transactions extends MY_Model {
      */
     public function get_player_stocks($what, $which)
     {
-        //Stocks that are each initialized to 0
-        //This should be set in the database
-        $stocks = array(
-            array('stock' => 'BOND', 'name' => 'Bonds', 'value' => 0),
-            array('stock' => 'GOLD', 'name' => 'Gold', 'value' => 0),
-            array('stock' => 'GRAN', 'name' => 'Grain', 'value' => 0),
-            array('stock' => 'IND', 'name' => 'Industrial', 'value' => 0),
-            array('stock' => 'OIL', 'name' => 'Oil', 'value' => 0),
-            array('stock' => 'TECH', 'name' => 'Tech', 'value' => 0)
-        );
 
         //Finds the transactions the player has made
         $this->db->order_by($this->_keyField, 'asc');
@@ -48,21 +49,21 @@ class Transactions extends MY_Model {
         //Decrements current holding of player by amount they sold
         foreach ($query->result() as $row) {
             if($row->Trans == 'buy') {
-                $key = array_search($row->Stock, array_column($stocks, 'Stock'));
-                if ($key != null) {
-                    $stocks[$key]['value'] += $row->Quantity;
+                $key = array_search($row->Stock, array_column($this->stocks, 'stock'));
+                if(isset($key)) {
+                    $this->stocks[$key]['value'] += $row->Quantity;
                 }
             } else if($row->Trans == 'sell') {
-                $key = array_search($row->Stock, array_column($stocks, 'Stock'));
-                if($key != null) {
-                    if($stocks[$key]['value']  > 0) {
-                        $stocks[$key]['value'] -= $row->Quantity;
+                $key = array_search($row->Stock, array_column($this->stocks, 'stock'));
+                if(isset($key)) {
+                    if($this->stocks[$key]['value']  > 0) {
+                        $this->stocks[$key]['value'] -= $row->Quantity;
                     }
                 }
             }
         }
 
-        return $stocks;
+        return $this->stocks;
     }
 
     /**

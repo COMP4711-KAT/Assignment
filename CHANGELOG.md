@@ -42,3 +42,6 @@
 * Changed portfolio/index to default to the logged in user, if found
 * Added a portfolio/login to allow users to login using a username
 * Added a portfolio/logout to allow users to logout
+
+## v.1.7 (2016-11-02)
+* Minor fix on transactions model

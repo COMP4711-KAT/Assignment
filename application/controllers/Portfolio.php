@@ -64,14 +64,14 @@ class Portfolio extends Application {
         // this is the view we want shown
         $this->data['pagebody'] = 'profile';
 
-        //Player's current holdings in each stock
-        $this->data['stocks']= $this->transactions->get_player_stocks("Player", $player);
-
         //Data to fill in dropdown menu
         $this->data['player_names'] = $this->players->all();
 
         //Data to fill transactions table
         $this->data['players'] = $this->transactions->some("Player", $player);
+
+        //Player's current holdings in each stock
+        $this->data['stocks']= $this->transactions->get_player_stocks("Player", $player);
 
         $this->render();
     }

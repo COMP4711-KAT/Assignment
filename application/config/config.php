@@ -31,7 +31,7 @@ $config['menu_choices'] = array(
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '';
+$config['base_url'] = '/';
 
 /*
 |--------------------------------------------------------------------------

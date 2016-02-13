@@ -31,7 +31,7 @@ class Portfolio extends Application {
     function index() {
 
         //If there is no user logged in
-        if(!isset($_SESSION['user'])) {
+        if($this->session->userdata('user') == null) {
             $this->data['pageTitle'] = 'Profile of Donald' ;
             // this is the view we want shown
             $this->data['pagebody'] = 'profile';
@@ -46,6 +46,8 @@ class Portfolio extends Application {
             $this->data['stocks']= $this->transactions->get_player_stocks("Player", 'Donald');
 
             $this->render();
+        } else {
+            $this -> one($this->session->userdata('user'));
         }
     }
 
@@ -72,5 +74,37 @@ class Portfolio extends Application {
         $this->data['players'] = $this->transactions->some("Player", $player);
 
         $this->render();
+    }
+    
+    /**
+     * Prompts the user to log in with a username
+     */
+    function login() {
+        $this->data['pageTitle'] = 'Login';
+
+        // this is the view we want shown
+        $this->data['pagebody'] = 'login';
+
+        $this->render();
+    }
+    
+    /**
+     * Prompts the user to log in with a username
+     */
+    function verify_login() {
+        if ($this->input->post('username') !== null) {
+            $this->session->set_userdata('user', $this->input->post('username'));
+            redirect('/welcome');
+        } else {
+            $this->login();
+        }
+    }
+    
+    /**
+     * Clears the session data of the logged in user
+     */
+    function logout() {
+        $this->session->unset_userdata('user');
+        redirect('/welcome');
     }
 }

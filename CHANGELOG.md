@@ -36,3 +36,9 @@
 * Got recently active stock and use that to get its history and transactions
 * Stocks history page implemented
 * Got rid of a view that was not needed
+
+## v.1.6 (2016-11-02)
+* Added a link to login in the navbar
+* Changed portfolio/index to default to the logged in user, if found
+* Added a portfolio/login to allow users to login using a username
+* Added a portfolio/logout to allow users to logout

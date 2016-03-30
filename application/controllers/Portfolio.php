@@ -92,8 +92,10 @@ class Portfolio extends Application {
      * Prompts the user to log in with a username
      */
     function verify_login() {
-        if ($this->input->post('username') !== null) {
-            $this->session->set_userdata('user', $this->input->post('username'));
+        $name = $this->input->post('username');
+        $user = $this->users->get($name);
+        if (password_verify($this->input->post('password'), $user->password)) {
+            $this->session->set_userdata('userName', $name);
             redirect('/welcome');
         } else {
             $this->login();

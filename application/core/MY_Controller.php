@@ -48,6 +48,10 @@ class Application extends CI_Controller {
 		$this->data['menubar'] = $this->parser->parse('_menubar', $this->config->item('menu_choices'), true);
 		$this->data['content'] = $this->parser->parse($this->data['pagebody'], $this->data, true);
 
+		//convert Caboose output into view parameteres
+		$this->data['caboose_styles'] = $this->caboose->styles();
+		$this->data['caboose_scripts'] = $this->caboose->scripts();
+		$this->data['caboose_trailings'] = $this->caboose->trailings();
 		// finally, build the browser page!
 		$this->data['data'] = &$this->data;
 		$this->parser->parse('_template', $this->data);

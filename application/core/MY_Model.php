@@ -270,4 +270,85 @@ class MY_Model extends CI_Model implements Active_Record {
         $query = $this->db->get($this->_tableName);
         return $query->result();
     }
+
+    function getCSVStockResults() {
+
+        $assocData = array();
+        $headerRecord = array();
+        if( ($handle = fopen( "http://bsx.jlparry.com/data/stocks", "r")) !== FALSE) {
+            $rowCounter = 0;
+            while (($rowData = fgetcsv($handle, 0, ",")) !== FALSE) {
+                if( 0 === $rowCounter) {
+                    $headerRecord = $rowData;
+                } else {
+                    foreach( $rowData as $key => $value) {
+                        $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
+                    }
+                }
+                $rowCounter++;
+            }
+            fclose($handle);
+        }
+
+        return $assocData;
+    }
+
+    function getCSVTransactionResults($which) {
+
+        $assocData = array();
+        $headerRecord = array();
+        $filtered_array = array();
+        if( ($handle = fopen( "http://bsx.jlparry.com/data/transactions", "r")) !== FALSE) {
+            $rowCounter = 0;
+            while (($rowData = fgetcsv($handle, 0, ",")) !== FALSE) {
+                if( 0 === $rowCounter) {
+                    $headerRecord = $rowData;
+                } else {
+                    foreach( $rowData as $key => $value) {
+                        if($value == "")
+                        $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
+                    }
+                }
+                $rowCounter++;
+            }
+            fclose($handle);
+        }
+
+       for ($i = 0; $i < count($assocData); $i ++) {
+           if($assocData[$i]["stock"] == $which) {
+               array_push($filtered_array, $assocData[$i]);
+           }
+       }
+
+        return $filtered_array;
+    }
+
+    function getCSVMovementResults($which) {
+
+        $assocData = array();
+        $headerRecord = array();
+        $filtered_array = array();
+        if( ($handle = fopen( "http://bsx.jlparry.com/data/movement", "r")) !== FALSE) {
+            $rowCounter = 0;
+            while (($rowData = fgetcsv($handle, 0, ",")) !== FALSE) {
+                if( 0 === $rowCounter) {
+                    $headerRecord = $rowData;
+                } else {
+                    foreach( $rowData as $key => $value) {
+                        $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
+                    }
+                }
+                $rowCounter++;
+            }
+            fclose($handle);
+        }
+
+        for ($i = 0; $i < count($assocData); $i ++) {
+            if($assocData[$i]["code"] == $which) {
+                array_push($filtered_array, $assocData[$i]);
+            }
+        }
+
+        return $filtered_array;
+    }
 }

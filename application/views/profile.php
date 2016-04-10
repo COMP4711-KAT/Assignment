@@ -19,21 +19,25 @@
         <h1>History of Transactions</h1>
         <table class="table">
             <tr>
+                <th>Sequence</th>
                 <th>Date & Time</th>
+                <th>Agent</th>
                 <th>Player</th>
                 <th>Stock</th>
-                <th>Transfer Type</th>
+                <th>Transaction</th>
                 <th>Quantity</th>
             </tr>
-            {players}
+            {transactions}
             <tr>
-                <td>{DateTime}</td>
-                <td>{Player}</td>
-                <td>{Stock}</td>
-                <td>{Trans}</td>
-                <td>{Quantity}</td>
+                <td>{seq}</td>
+                <td>{datetime}</td>
+                <td>{agent}</td>
+                <td>{player}</td>
+                <td>{stock}</td>
+                <td>{trans}</td>
+                <td>{quantity}</td>
             </tr>
-            {/players}
+            {/transactions}
         </table>
     </div>
 

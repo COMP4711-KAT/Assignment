@@ -16,17 +16,19 @@
     <div class="col-md-4">
         <table class="table">
             <tr>
-                <th>Stock</th>
+                <th>Name</th>
+                <th>Category</th>
                 <th>Value</th>
                 <th>Link</th>
             </tr>
-            {stocks}
+            {stockscsv}
             <tr>
-                <td>{Name}</td>
-                <td>{Value}</td>
-                <td><a href="/stock/{Code}">Stock History</a></td>
+                <td>{name}</td>
+                <td>{category}</td>
+                <td>{value}</td>
+                <td><a href="/stock/{code}">Stock History</a></td>
             </tr>
-            {/stocks}
+            {/stockscsv}
         </table>
     </div>
 </div>

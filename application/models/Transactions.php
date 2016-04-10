@@ -96,4 +96,33 @@ class Transactions extends MY_Model {
         $query = $this->db->get($this->_tableName);
         return $query->result();
     }
+
+    function get_player_transactions($player) {
+        $assocData = array();
+        $headerRecord = array();
+        $filtered_array = array();
+        if( ($handle = fopen( "http://bsx.jlparry.com/data/transactions", "r")) !== FALSE) {
+            $rowCounter = 0;
+            while (($rowData = fgetcsv($handle, 0, ",")) !== FALSE) {
+                if( 0 === $rowCounter) {
+                    $headerRecord = $rowData;
+                } else {
+                    foreach( $rowData as $key => $value) {
+                        if($value == "")
+                            $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
+                    }
+                }
+                $rowCounter++;
+            }
+            fclose($handle);
+        }
+
+        for ($i = 0; $i < count($assocData); $i ++) {
+            if($assocData[$i]["player"] == $player) {
+                array_push($filtered_array, $assocData[$i]);
+            }
+        }
+
+        return $filtered_array;
+    }
 }

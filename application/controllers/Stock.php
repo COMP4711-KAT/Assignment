@@ -27,9 +27,10 @@ class Stock extends Application {
         $this->data['pageTitle'] = 'Stocks';
         $this->data['pagebody'] = 'stocks';
 
-        $this->data['stocks_list'] = $this->stocks->all();
-        $this->data['stocks'] = $this->movements->some_recent();
-        $this->data['transactions'] = $this->transactions->some_recent();
+        $stockName = "APPL";
+        $this->data['stocks_list'] = $this->stocks->getCSVStockResults();
+        $this->data['movement'] = $this->movements->getCSVMovementResults($stockName);
+        $this->data['transactions'] = $this->transactions->getCSVTransactionResults($stockName);
 
         $this->render();
 
@@ -44,9 +45,9 @@ class Stock extends Application {
 
         $this->data['pageTitle'] = 'Stocks';
         $this->data['pagebody'] = 'stocks';
-        $this->data['stocks_list'] = $this->stocks->all();
-        $this->data['stocks'] = $this->movements->some_desc('Code', $stockName);
-        $this->data['transactions'] = $this->transactions->some_desc('Stock', $stockName);
+        $this->data['stocks_list'] = $this->stocks->getCSVStockResults();
+        $this->data['movement'] = $this->movements->getCSVMovementResults($stockName);
+        $this->data['transactions'] = $this->transactions->getCSVTransactionResults($stockName);
         $this->render();
     }
 

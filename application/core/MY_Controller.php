@@ -31,11 +31,10 @@ class Application extends CI_Controller {
                 $this->load->library('session');
                 $navbar = $this->config->item('menu_choices');
                 if ($this->session->userdata('user') !== null) {
-                    $navbar['menudata'][3] 
-                        = array('name' => 'Logout', 'link' => '/logout');
+                    $navbar['menudata'][3] = array('name' => 'Logout', 'link' => '/logout');
                 } else {
-                    $navbar['menudata'][3] 
-                        = array('name' => 'Login', 'link' => '/login');
+                    $navbar['menudata'][3] = array('name' => 'Login', 'link' => '/login');
+					$navbar['menudata'][4] = array('name' => 'Register', 'link' => '/register');
                 }
                 $this->config->set_item('menu_choices', $navbar);
 	}

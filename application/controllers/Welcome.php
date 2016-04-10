@@ -13,7 +13,6 @@ class Welcome extends Application {
     function __construct() {
         parent::__construct();
 
-        $this->load->model('players');
         $this->load->model('stocks');
     }
 

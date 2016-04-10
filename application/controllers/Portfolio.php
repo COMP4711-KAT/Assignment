@@ -47,7 +47,7 @@ class Portfolio extends Application {
 
             $this->render();
         } else {
-            $this -> one($this->session->userdata('user'));
+            $this -> one($this->session->userdata('user')["name"]);
         }
     }
 
@@ -56,9 +56,7 @@ class Portfolio extends Application {
      * @param $player the name of the player
      */
     function one($player) {
-
         $name = ucfirst($player);
-
         $this->data['pageTitle'] = 'Profile of ' . $name;
 
         // this is the view we want shown
@@ -92,14 +90,27 @@ class Portfolio extends Application {
      * Prompts the user to log in with a username
      */
     function verify_login() {
-        $name = $this->input->post('username');
-        $user = $this->users->get($name);
-        if (password_verify($this->input->post('password'), $user->password)) {
-            $this->session->set_userdata('userName', $name);
+        $userId = $this->input->post('UserId');
+        $player = $this->players->get($userId);
+        if (password_verify($this->input->post('Password'), $player->Password)) {
+            $this->session->set_userdata('user'
+                    , ["name"=>$player->Player, "avatar"=>$player->Avatar]);
             redirect('/welcome');
         } else {
             $this->login();
         }
+    }
+
+    /**
+     * Prompts the user to register an account
+     */
+    function register() {
+        $this->data['pageTitle'] = 'Register';
+
+        // this is the view we want shown
+        $this->data['pagebody'] = 'register';
+
+        $this->render();
     }
     
     /**

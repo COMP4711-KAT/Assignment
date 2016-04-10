@@ -8,6 +8,6 @@ class Players extends MY_Model {
      * Takes the table name (Players) and primary key (Player) as arguments.
      */
     function __construct() {
-        parent::__construct('Players', 'Player');
+        parent::__construct('Players', 'UserId');
     }
 }

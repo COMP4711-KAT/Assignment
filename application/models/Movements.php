@@ -10,7 +10,7 @@ class Movements extends MY_Model {
      * Takes the table name (Movements) and primary key (Datetime) as arguments.
      */
     function __construct() {
-        parent::__construct('Movements', 'Datetime');
+        parent::__construct('movements', 'Datetime');
     }
 
     /**

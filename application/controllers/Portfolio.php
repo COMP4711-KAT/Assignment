@@ -94,7 +94,7 @@ class Portfolio extends Application {
         $player = $this->players->get($userId);
         if (password_verify($this->input->post('Password'), $player->Password)) {
             $this->session->set_userdata('user'
-                    , ["name"=>$player->Player, "avatar"=>$player->Avatar]);
+                    , ["name"=>$player->Player, "avatar"=>$player->Avatar, "role"=>$player->UserRole]);
             redirect('/welcome');
         } else {
             $this->login();

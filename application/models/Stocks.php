@@ -5,9 +5,9 @@
 class Stocks extends MY_Model {
     /**
      * Stocks constructor.
-     * Takes the table name (Stocks) and primary key (Stock) as arguments.
+     * Takes the table name (stocks) and primary key (Stock) as arguments.
      */
     function __construct() {
-        parent::__construct('Stocks', 'Code');
+        parent::__construct('stocks', 'Code');
     }
 }

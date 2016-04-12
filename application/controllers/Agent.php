@@ -100,7 +100,7 @@ class Agent extends Application {
                 $response = $this->bsx->buy_stock($agent->team, $player, $stock, $quantity, $agent->token);
 
                 var_dump($response);
-                //$this->stocks_held->add($response);
+                $this->stocks_held->add($response);
             } else {
                 // get the certificates and sell the stock
                 echo 'selling';

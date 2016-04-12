@@ -13,6 +13,8 @@ class Agent extends Application {
         parent::__construct();
 
         $this->load->model('agents');
+        $this->load->model('stocks');
+        $this->load->model('transactions');
         $this->load->library('bsx');
     }
 
@@ -74,7 +76,39 @@ class Agent extends Application {
         redirect('/agent');
     }
 
-    function test() {
-        $this->bsx->register_agent();
+    /**
+     * Both buy and sell stock from the BSX. The specific action is determined by which submit button what pressed.
+     */
+    function exchange() {
+        // If the user is not logged in, redirect to home
+        if ($this->session->userdata('user') == null) {
+            redirect('/');
+        }
+
+        // buy is true if BUY button was pressed, else it's false and we are SELLING
+        $buy      = $this->input->post('buy') == false ? false : true;
+        $stock    = $this->input->post('stock');
+        $quantity = $this->input->post('stock');
+        $player   = $this->session->userdata('user')['name'];
+
+        // This both registers the agent and makes sure the game is open
+        if (!$this->bsx->register_agent()) {
+            $agent = $this->agents->get(1);
+
+            if ($buy) {
+                $response = $this->bsx->buy_stock($agent->team, $player, $stock, $quantity, $agent->token);
+
+                var_dump($response);
+                echo 'gotem';
+            } else {
+                // get the certificates and sell the stock
+                echo 'selling';
+            }
+        } else {
+            echo 'here';
+            echo $this->session->userdata('message');
+        }
+
+        //redirect('/');
     }
 }

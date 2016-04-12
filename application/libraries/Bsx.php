@@ -12,6 +12,8 @@ class Bsx {
 
         $this->_ci->load->model('agents');
         $this->_ci->load->library('rest');
+
+        $this->_ci->rest->initialize(array('server' => 'http://bsx.jlparry.com'));
     }
 
     /**
@@ -28,13 +30,15 @@ class Bsx {
     /**
      * Registers your agent and returns the registration token, or false if an error occured.
      *
-     * @return string token or false
+     * @return bool success
      */
     public function register_agent() {
         $agent = $this->_ci->agents->get(1);
 
         // Make sure we have an agent
         if ($agent == null) {
+            $this->_ci->session->set_flashdata('message',
+                                               "There is no existing agent. Ask the admin to create one in the agent management portal.");
             return false;
         }
 
@@ -46,13 +50,28 @@ class Bsx {
 
         // Make sure the game is in the open or register state
         if ($status->state == 2 || $status->state == 3) {
-            $this->_ci->rest->initialize(array('server' => 'http://bsx.jlparry.com'));
+            $response = $this->_ci->rest->post('register', $data);
 
-            $answer = $this->_ci->rest->post('register', $data);
+            $agent->token = $response['token'];
 
-            return $answer['token'];
+            $this->_ci->agents->update($agent);
+
+            return true;
         } else {
+            $this->_ci->session->set_flashdata('message', "There game is currently closed. Try again later.");
             return false;
         }
+    }
+
+    public function buy_stock($team, $player, $stock, $quantity, $token) {
+        $data = array('team' => $team,
+                      'player' => $player,
+                      'stock' => $stock,
+                      'quantity' => $quantity,
+                      'token' => $token);
+
+        $response = $this->_ci->rest->post('buy', $data);
+
+        return $response;
     }
 }

@@ -57,7 +57,8 @@
                 <td>{value}</td>
                 <td>
                     <form action="/agent/exchange" method="post">
-                        <input id="quantity" type="number" value="1" min="0" style="width:40px"/>
+                        <input id="stock" name="stock" type="hidden" value="{stock}" />
+                        <input id="quantity" name="quantity" type="number" value="1" min="0" style="width:40px"/>
                         <button id="buy" name="buy" type="submit" class="btn btn-primary">Buy</button>
                         <button id="sell" name="sell" type="submit" class="btn btn-danger">Sell</button>
                     </form>

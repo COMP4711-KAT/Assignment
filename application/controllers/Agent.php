@@ -13,6 +13,7 @@ class Agent extends Application {
         parent::__construct();
 
         $this->load->model('agents');
+        $this->load->library('bsx');
     }
 
     /**
@@ -29,14 +30,14 @@ class Agent extends Application {
 
         $agent = $this->agents->get(1);
         if ($agent == null) {
-            $this->data['message']     = "<div class='alert alert-warning'>You need to create an agent to participate in the BSX.</div>";
+            $this->data['message']   = "<div class='alert alert-warning'>You need to create an agent to participate in the BSX.</div>";
 
             $this->data['team']      = '';
             $this->data['name']      = '';
             $this->data['frequency'] = 30;
             $this->data['button']    = 'Create';
         } else {
-            $this->data['message']     = "<div class='alert alert-success'>You are ready to participate in the BSX.</div>";
+            $this->data['message']   = "<div class='alert alert-success'>You are ready to participate in the BSX.</div>";
 
             $this->data['team']      = $agent->team;
             $this->data['name']      = $agent->name;
@@ -71,5 +72,9 @@ class Agent extends Application {
         }
 
         redirect('/agent');
+    }
+
+    function test() {
+        $this->bsx->register_agent();
     }
 }

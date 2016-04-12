@@ -31,10 +31,11 @@ class Application extends CI_Controller {
 		$this->load->library('session');
 		$navbar = $this->config->item('menu_choices');
 		if ($this->session->userdata('user') !== null) {
-			$navbar['menudata'][3] = array('name' => 'Logout', 'link' => '/logout');
-
 			if ($this->session->userdata('user')['role'] == 'admin') {
-				$navbar['menudata'][4] = array('name' => 'Agent Management', 'link' => '/agent');
+				$navbar['menudata'][3] = array('name' => 'Agent Management', 'link' => '/agent');
+				$navbar['menudata'][4] = array('name' => 'Logout', 'link' => '/logout');
+			} else {
+				$navbar['menudata'][3] = array('name' => 'Logout', 'link' => '/logout');
 			}
 		} else {
 			$navbar['menudata'][3] = array('name' => 'Login', 'link' => '/login');

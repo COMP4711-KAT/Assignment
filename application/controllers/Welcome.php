@@ -27,6 +27,7 @@ class Welcome extends Application {
 
         $this->data['players'] = $this->players->all();
         $this->data['stockscsv'] = $this->stocks->getCSVStockResults();
+        $this->data['message'] = "<div class='alert alert-danger'>" . $this->session->userdata('message') ."</div>";
         $this->render();
     }
 }

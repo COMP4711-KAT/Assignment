@@ -94,13 +94,19 @@ class Agent extends Application {
 
         // This both registers the agent and makes sure the game is open
         if ($this->bsx->register_agent()) {
+            if ($this->bsx->get_status['state'] != 3)
             $agent = $this->agents->get(1);
 
             if ($buy) {
                 $response = $this->bsx->buy_stock($agent->team, $player, $stock, $quantity, $agent->token);
 
-                var_dump($response);
-                $this->stocks_held->add($response);
+                if (is_array($response)) {
+                    $this->stocks_held->add($response);
+                    // need to also add to transaction history
+                    //$this->transactions->add()
+                } else {
+                    $this->session->set_flashdata('message', $response);
+                }
             } else {
                 // get the certificates and sell the stock
                 echo 'selling';

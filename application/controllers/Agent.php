@@ -94,27 +94,48 @@ class Agent extends Application {
 
         // This both registers the agent and makes sure the game is open
         if ($this->bsx->register_agent()) {
-            if ($this->bsx->get_status['state'] != 3)
+            if ($this->bsx->get_status()->state != 3) {
+                $this->session->set_flashdata('message', 'You must wait until the game is OPEN.');
+                redirect('/profile');
+            }
+
             $agent = $this->agents->get(1);
 
             if ($buy) {
+                // Buying stocks
                 $response = $this->bsx->buy_stock($agent->team, $player, $stock, $quantity, $agent->token);
 
                 if (is_array($response)) {
-                    $this->stocks_held->add($response);
-                    // need to also add to transaction history
-                    //$this->transactions->add()
+                    if (array_key_exists('message', $response)) {
+                        $this->session->set_flashdata('message', $response['message']);
+                    } else {
+                        $this->stocks_held->add($response);
+
+                        // need to also add to transaction history
+                        $data = array('DateTime' => date(), 'Player' => $player, 'Stock' => $stock, 'Quantity' => $quantity, 'Trans' => 'buy');
+                        $this->transactions->add($data);
+                    }
                 } else {
-                    $this->session->set_flashdata('message', $response);
+                    // The server is broken (AGAIN). Just give an innocent error message
+                    $this->session->set_flashdata('message', 'Something went wrong.');
                 }
             } else {
-                // get the certificates and sell the stock
-                echo 'selling';
+                // Selling stocks
+                $certificates = $this->stocks_held->get_certificates($agent->team, $player, $stock);
+
+                if ($certificates) {
+                    $response = $this->bsx->sell_stock($agent->team, $player, $stock, $quantity, $agent->token, $certificates);
+
+                    var_dump($response);
+                    die();
+
+                    // need to also add to transaction history
+                    //$data = array('DateTime' => date(), 'Player' => $player, 'Stock' => $stock, 'Quantity' => $quantity, 'Trans' => 'buy');
+                    //$this->transactions->add($data);
+                }
             }
-        } else {
-            echo $this->session->userdata('message');
         }
 
-        redirect('/');
+        redirect('/profile');
     }
 }

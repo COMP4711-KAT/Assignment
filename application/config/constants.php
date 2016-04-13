@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+define('PASSWORD', 'tuesday');
+
 /*
 |--------------------------------------------------------------------------
 | Display Debug backtrace

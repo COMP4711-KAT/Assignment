@@ -19,7 +19,7 @@ class Transactions extends MY_Model {
      * Takes the table name (Transactions) and primary key (Player) as arguments.
      */
     function __construct() {
-        parent::__construct('Transactions', 'Player');
+        parent::__construct('transactions', 'Player');
     }
 
     /**

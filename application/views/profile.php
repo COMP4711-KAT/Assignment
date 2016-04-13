@@ -40,7 +40,6 @@
             {/transactions}
         </table>
     </div>
-
 </div>
 
 <div class="row">
@@ -50,11 +49,20 @@
             <tr>
                 <th>Stock</th>
                 <th>Quantity</th>
+                <th>Manage</th>
             </tr>
             {stocks}
             <tr>
                 <td>{name}</td>
                 <td>{value}</td>
+                <td>
+                    <form action="/agent/exchange" method="post">
+                        <input id="stock" name="stock" type="hidden" value="{stock}" />
+                        <input id="quantity" name="quantity" type="number" value="1" min="0" style="width:40px"/>
+                        <button id="buy" name="buy" type="submit" class="btn btn-primary">Buy</button>
+                        <button id="sell" name="sell" type="submit" class="btn btn-danger">Sell</button>
+                    </form>
+                </td>
             </tr>
             {/stocks}
         </table>

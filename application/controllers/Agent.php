@@ -33,14 +33,14 @@ class Agent extends Application {
 
         $agent = $this->agents->get(1);
         if ($agent == null) {
-            $this->data['message']   = "<div class='alert alert-warning'>You need to create an agent to participate in the BSX.</div>";
+            $this->data['agent-info']   = "<div class='alert alert-warning'>You need to create an agent to participate in the BSX.</div>";
 
             $this->data['team']      = '';
             $this->data['name']      = '';
             $this->data['frequency'] = 30;
             $this->data['button']    = 'Create';
         } else {
-            $this->data['message']   = "<div class='alert alert-success'>You are ready to participate in the BSX.</div>";
+            $this->data['agent-info']   = "<div class='alert alert-success'>You are ready to participate in the BSX.</div>";
 
             $this->data['team']      = $agent->team;
             $this->data['name']      = $agent->name;
@@ -114,6 +114,8 @@ class Agent extends Application {
                         // need to also add to transaction history
                         $data = array('DateTime' => date(), 'Player' => $player, 'Stock' => $stock, 'Quantity' => $quantity, 'Trans' => 'buy');
                         $this->transactions->add($data);
+
+                        $this->session->set_flashdata('success', 'Stock purchased successfully.');
                     }
                 } else {
                     // The server is broken (AGAIN). Just give an innocent error message
@@ -132,6 +134,8 @@ class Agent extends Application {
                     // need to also add to transaction history
                     //$data = array('DateTime' => date(), 'Player' => $player, 'Stock' => $stock, 'Quantity' => $quantity, 'Trans' => 'buy');
                     //$this->transactions->add($data);
+
+                    $this->session->set_flashdata('success', 'Stock sold successfully.');
                 }
             }
         }

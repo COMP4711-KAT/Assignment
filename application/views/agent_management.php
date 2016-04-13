@@ -1,4 +1,4 @@
-{message}
+{agent-info}
 <div class="row">
     <div class="col-md-12">
         <form action="/agent/create" method="post">

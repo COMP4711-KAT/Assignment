@@ -18,6 +18,7 @@ class Portfolio extends Application {
 
         $this->load->model('transactions');
         $this->load->model('players');
+        $this->load->library('form_validation');
     }
 
     //-------------------------------------------------------------
@@ -92,11 +93,12 @@ class Portfolio extends Application {
     function verify_login() {
         $userId = $this->input->post('UserId');
         $player = $this->players->get($userId);
-        if (password_verify($this->input->post('Password'), $player->Password)) {
+        if ($player != null && password_verify($this->input->post('Password'), $player->Password)) {
             $this->session->set_userdata('user'
                     , ["name"=>$player->Player, "avatar"=>$player->Avatar, "role"=>$player->UserRole]);
             redirect('/welcome');
         } else {
+            $this->session->set_flashdata('message', 'Incorrect Username or Password.');
             $this->login();
         }
     }
@@ -112,7 +114,59 @@ class Portfolio extends Application {
 
         $this->render();
     }
-    
+
+    /**
+     * Validates the registration input and either creates a new user in the DB or sends an error.
+     */
+    function verify_register() {
+        $this->form_validation->set_rules('UserId', 'Username', 'required|callback_duplicate_entry');
+        $this->form_validation->set_rules('Password', 'Password', 'required|min_length[1]|max_length[60]');
+        $this->form_validation->set_rules('Player', 'Name', 'required');
+        if ($this->form_validation->run() == FALSE) {
+            $this->register();
+        } else {
+            $this->session->set_flashdata('success', 'Thanks for registering!');
+            $user = array();
+            $user['UserId'] = $this->input->post('UserId');
+            $user['Player'] = $this->input->post('Player');
+            $user['Password'] = password_hash($this->input->post('Password'), PASSWORD_DEFAULT);
+            $user['Cash'] = 0;
+            $user['UserRole'] = 'user';
+            if (!file_exists('./data/avatars')) {
+                mkdir('./data/avatars', 0777, true);
+            }
+            $config['upload_path'] = './data/avatars/';
+            $config['allowed_types'] = 'gif|jpg|png';
+            $config['encrypt_name'] = true;
+            $this->load->library('upload', $config);
+            $this->upload->do_upload('Avatar');
+
+            $upload = $this->upload->data();
+            if($upload['is_image']) {
+                $user['Avatar'] = $upload['file_name'];
+            } else {
+                $this->form_validation->set_message('Avatar', "Your avatar must have one of the three
+                        extensions: .gif | .jpg | .png");
+                $this->register();
+            }
+            $this->players->add($user);
+
+            $this->login();
+        }
+    }
+    /**
+     * Returns false if the userId is used for another account.
+     */
+    function duplicate_entry($userId) {
+        $result = $this->players->get($userId);
+        if ($result == null) {
+            return TRUE;
+        } else {
+            $this->form_validation->set_message('duplicate_entry', 'Username is already in use.');
+            return false;
+        }
+    }
+
     /**
      * Clears the session data of the logged in user
      */

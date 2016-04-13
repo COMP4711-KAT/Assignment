@@ -28,10 +28,9 @@ class Application extends CI_Controller {
 		$this->data['pageTitle'] = 'Stock Ticker';   // our default page
                 
 		// check for user log in then change navbar accordingly
-		$this->load->library('session');
 		$navbar = $this->config->item('menu_choices');
 		if ($this->session->userdata('user') !== null) {
-			if ($this->session->userdata('user')['role'] == 'admin') {
+			if ($this->session->userdata('user')['role'] == ROLE_ADMIN) {
 				$navbar['menudata'][3] = array('name' => 'Agent Management', 'link' => '/agent');
 				$navbar['menudata'][4] = array('name' => 'Logout', 'link' => '/logout');
 			} else {
@@ -55,6 +54,26 @@ class Application extends CI_Controller {
 		// finally, build the browser page!
 		$this->data['data'] = &$this->data;
 		$this->parser->parse('_template', $this->data);
+	}
+
+    /**
+     * Restricts user access they do not have the role in roleNeeded
+     * @param null $roleNeeded
+     */
+	function restrict($roleNeeded = null) {
+		$userRole = $this->session->userdata('userRole');
+
+		if ($roleNeeded != null) {
+			if (is_array($roleNeeded)) {
+				if (!in_array($userRole, $roleNeeded)) {
+					redirect("/");
+					return;
+				}
+			} else if ($userRole != $roleNeeded) {
+				redirect("/");
+				return;
+			}
+		}
 	}
 
 }

@@ -58,11 +58,21 @@ class Bsx {
 
             return true;
         } else {
-            $this->_ci->session->set_flashdata('message', "There game is currently closed. Try again later.");
+            $this->_ci->session->set_flashdata('message', "The game is currently closed. Try again later.");
             return false;
         }
     }
 
+    /**
+     * Buys stock on behalf of the player, and returns the response from the server.
+     *
+     * @param $team string team
+     * @param $player string player name
+     * @param $stock string stock code
+     * @param $quantity int quantity to purchase
+     * @param $token string authentication token
+     * @return mixed xml response from the server
+     */
     public function buy_stock($team, $player, $stock, $quantity, $token) {
         $data = array('team' => $team,
                       'player' => $player,
@@ -71,6 +81,29 @@ class Bsx {
                       'token' => $token);
 
         $response = $this->_ci->rest->post('buy', $data);
+
+        return $response;
+    }
+
+    /**
+     * Sells stock on behalf of the player, and returns the response from the server.
+     *
+     * @param $team string team
+     * @param $player string player name
+     * @param $stock string stock code
+     * @param $quantity int quantity to sell
+     * @param $token array authentication token
+     * @return mixed xml response from the server
+     */
+    public function sell_stock($team, $player, $stock, $quantity, $token, $certificate) {
+        $data = array('team' => $team,
+                      'player' => $player,
+                      'stock' => $stock,
+                      'quantity' => $quantity,
+                      'token' => $token,
+                      'certificate' => $certificate);
+
+        $response = $this->_ci->rest->post('sell', $data);
 
         return $response;
     }

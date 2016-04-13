@@ -49,6 +49,15 @@ class Application extends CI_Controller {
 	 */
 	function render()
 	{
+		// Show an error message if we have one
+		if ($this->session->userdata('message') != null) {
+			$this->data['message'] = "<div class='alert alert-danger'>" . $this->session->userdata('message') ."</div>";
+		} else if ($this->session->userdata('success') != null) {
+            $this->data['message'] = "<div class='alert alert-success'>" . $this->session->userdata('success') ."</div>";
+        } else {
+            $this->data['message'] = "";
+        }
+
 		$this->data['menubar'] = $this->parser->parse('_menubar', $this->config->item('menu_choices'), true);
 		$this->data['content'] = $this->parser->parse($this->data['pagebody'], $this->data, true);
 

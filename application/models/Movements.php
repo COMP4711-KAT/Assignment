@@ -51,5 +51,69 @@ class Movements extends MY_Model {
         $query = $this->db->get($this->_tableName);
         return $query->result();
     }
+
+    /**
+     * Gets the list of movements according to a specified stock
+     * @param $which the stock specified
+     * @return array list of movements related to stock
+     */
+    function get_movements($which) {
+
+        $assocData = array();
+        $headerRecord = array();
+        $filtered_array = array();
+        if( ($handle = fopen( "http://bsx.jlparry.com/data/movement", "r")) !== FALSE) {
+            $rowCounter = 0;
+            while (($rowData = fgetcsv($handle, 0, ",")) !== FALSE) {
+                if( 0 === $rowCounter) {
+                    $headerRecord = $rowData;
+                } else {
+                    foreach( $rowData as $key => $value) {
+                        $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
+                    }
+                }
+                $rowCounter++;
+            }
+            fclose($handle);
+        }
+
+        for ($i = 0; $i < count($assocData); $i ++) {
+            if($assocData[$i]["code"] == $which) {
+                array_push($filtered_array, $assocData[$i]);
+            }
+        }
+
+        return $filtered_array;
+    }
+
+    function get_most_recent_movements_stock() {
+        $CI = & get_instance();
+        $stock = $CI->stocks->get_most_recent_stock();
+        $assocData = array();
+        $headerRecord = array();
+        $filtered_array = array();
+        if( ($handle = fopen( "http://bsx.jlparry.com/data/movement", "r")) !== FALSE) {
+            $rowCounter = 0;
+            while (($rowData = fgetcsv($handle, 0, ",")) !== FALSE) {
+                if( 0 === $rowCounter) {
+                    $headerRecord = $rowData;
+                } else {
+                    foreach( $rowData as $key => $value) {
+                        $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
+                    }
+                }
+                $rowCounter++;
+            }
+            fclose($handle);
+        }
+
+        for ($i = 0; $i < count($assocData); $i ++) {
+            if($assocData[$i]["code"] == $stock[0]["code"]) {
+                array_push($filtered_array, $assocData[$i]);
+            }
+        }
+
+        return $filtered_array;
+    }
 }
 

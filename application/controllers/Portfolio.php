@@ -18,6 +18,7 @@ class Portfolio extends Application {
 
         $this->load->model('transactions');
         $this->load->model('players');
+        $this->load->model('stocks');
         $this->load->library('form_validation');
     }
 
@@ -44,7 +45,7 @@ class Portfolio extends Application {
             $this->data['players'] = $this->transactions->some("Player", 'Donald');
 
             //Player's current holdings in each stock, Donald for now
-            $this->data['stocks']= $this->transactions->get_player_stocks("Player", 'Donald');
+            $this->data['stocks']= $this->stocks->get_stocks();
 
             $this->render();
         } else {
@@ -70,7 +71,7 @@ class Portfolio extends Application {
         $this->data['transactions'] = $this->transactions->get_player_transactions($player);
 
         //Player's current holdings in each stock
-        $this->data['stocks']= $this->transactions->get_player_stocks("Player", $player);
+        $this->data['stocks']= $this->stocks->get_stocks();
 
         $this->render();
     }

@@ -86,6 +86,7 @@
         <h1>Active Stocks</h1>
         <table class="table">
             <tr>
+                <th>Code</th>
                 <th>Name</th>
                 <th>Category</th>
                 <th>Value</th>
@@ -93,6 +94,7 @@
             </tr>
             {stockscsv}
             <tr>
+                <td>{code}</td>
                 <td>{name}</td>
                 <td>{category}</td>
                 <td>{value}</td>

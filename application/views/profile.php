@@ -47,17 +47,20 @@
         <h1>Current Holdings</h1>
         <table class="table">
             <tr>
-                <th>Stock</th>
-                <th>Quantity</th>
-                <th>Manage</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Value</th>
             </tr>
             {stocks}
             <tr>
+                <td>{code}</td>
                 <td>{name}</td>
+                <td>{category}</td>
                 <td>{value}</td>
                 <td>
                     <form action="/agent/exchange" method="post">
-                        <input id="stock" name="stock" type="hidden" value="{stock}" />
+                        <input id="stock" name="stock" type="hidden" value="{code}" />
                         <input id="quantity" name="quantity" type="number" value="1" min="0" style="width:40px"/>
                         <button id="buy" name="buy" type="submit" class="btn btn-primary">Buy</button>
                         <button id="sell" name="sell" type="submit" class="btn btn-danger">Sell</button>

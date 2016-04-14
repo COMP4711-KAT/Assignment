@@ -195,4 +195,42 @@ class Transactions extends MY_Model {
 
         return $filtered_array;
     }
+
+    /**
+     * Gets list of recent transactions for the homepage
+     * @return array list of most recent transactions
+     */
+    function get_most_recent_transactions_stock_home() {
+        $CI = & get_instance();
+        $stock = $CI->stocks->get_most_recent_stock();
+        $assocData = array();
+        $headerRecord = array();
+        $filtered_array = array();
+        if( ($handle = fopen( "http://bsx.jlparry.com/data/transactions", "r")) !== FALSE) {
+            $rowCounter = 0;
+            while (($rowData = fgetcsv($handle, 0, ",")) !== FALSE) {
+                if( 0 === $rowCounter) {
+                    $headerRecord = $rowData;
+                } else {
+                    foreach( $rowData as $key => $value) {
+                        $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
+                    }
+                }
+                $rowCounter++;
+            }
+            fclose($handle);
+        }
+
+        for ($i = 0; $i < count($assocData); $i ++) {
+            if($assocData[$i]["code"] == $stock[0]["code"]) {
+                array_push($filtered_array, $assocData[$i]);
+            }
+
+            if(count($filtered_array) >= 10) {
+                break;
+            }
+        }
+
+        return $filtered_array;
+    }
 }

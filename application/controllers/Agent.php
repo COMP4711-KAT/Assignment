@@ -119,7 +119,7 @@ class Agent extends Application {
                     }
                 } else {
                     // The server is broken (AGAIN). Just give an innocent error message
-                    $this->session->set_flashdata('message', 'Something went wrong.');
+                    $this->session->set_flashdata('message', 'Something went wrong. The server is probably broken.');
                 }
             } else {
                 // Selling stocks

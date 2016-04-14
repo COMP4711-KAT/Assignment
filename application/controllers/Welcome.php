@@ -24,6 +24,7 @@ class Welcome extends Application {
     //-------------------------------------------------------------
 
     function index() {
+        $user = $this->session->user;
         $this->data['pageTitle'] = 'Welcome to Kitty Kats Stock Exchanger Brokerage!';
         // this is the view we want shown
         $this->data['pagebody'] = 'homepage';
@@ -46,6 +47,18 @@ class Welcome extends Application {
         break;
             default:
                 $this->data['state'] = "Unknown state";
+        }
+        if(isset($user)) {
+            $this->data['player_name'] = $user['name'];
+            if ($user['avatar'] != null) {
+                $image = base64_encode($user['avatar']);
+                $this->data['player_avatar'] = "data:image/jpeg;base64," . $image;
+            } else {
+                $this->data['player_avatar'] = "http://fanexpovancouver.com/wp-content/uploads/2013/12/550w_soaps_silhouettesm.jpg";
+            }
+        } else {
+            $this->data['player_name'] = "Guest";
+            $this->data['player_avatar'] = "http://fanexpovancouver.com/wp-content/uploads/2013/12/550w_soaps_silhouettesm.jpg";
         }
         $this->data['round'] = $status->round;
         $this->data['players'] = $this->players->all();

@@ -4,66 +4,12 @@
  */
 class Transactions extends MY_Model {
 
-    //Current Holdings that are each initialized to 0
-     var $stocks = array(
-        array('stock' => 'BOND', 'name' => 'Bonds', 'value' => 0),
-        array('stock' => 'GOLD', 'name' => 'Gold', 'value' => 0),
-        array('stock' => 'GRAN', 'name' => 'Grain', 'value' => 0),
-        array('stock' => 'IND', 'name' => 'Industrial', 'value' => 0),
-        array('stock' => 'OIL', 'name' => 'Oil', 'value' => 0),
-        array('stock' => 'TECH', 'name' => 'Tech', 'value' => 0)
-    );
-
     /**
      * Transactions constructor.
      * Takes the table name (Transactions) and primary key (Player) as arguments.
      */
     function __construct() {
         parent::__construct('transactions', 'Player');
-    }
-
-    /**
-     * This creates bogus data for the current holdings of each player starting
-     * at 0. And increments if they had bought any stock and decrements if they
-     * have greater than 0 units in that stock and they had been selling that
-     * stock.
-     * @param $what the column of the table
-     * @param $which the value to search in column
-     * @return array array of objects
-     */
-    public function get_player_stocks($what, $which)
-    {
-
-        //Finds the transactions the player has made
-        $this->db->order_by($this->_keyField, 'asc');
-
-        if (($what == 'period') && ($which < 9)) {
-            $this->db->where($what, $which); // special treatment for period
-        } else {
-            $this->db->where($what, $which);
-        }
-
-        $query = $this->db->get($this->_tableName);
-
-        //Increments current holding of player by amount they bought
-        //Decrements current holding of player by amount they sold
-        foreach ($query->result() as $row) {
-            if($row->Trans == 'buy') {
-                $key = array_search($row->Stock, array_column($this->stocks, 'stock'));
-                if(isset($key)) {
-                    $this->stocks[$key]['value'] += $row->Quantity;
-                }
-            } else if($row->Trans == 'sell') {
-                $key = array_search($row->Stock, array_column($this->stocks, 'stock'));
-                if(isset($key)) {
-                    if($this->stocks[$key]['value']  > 0) {
-                        $this->stocks[$key]['value'] -= $row->Quantity;
-                    }
-                }
-            }
-        }
-
-        return $this->stocks;
     }
 
     /**

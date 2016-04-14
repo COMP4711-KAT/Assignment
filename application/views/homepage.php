@@ -1,5 +1,9 @@
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
+        <h2>{player_name}</h2>
+        <img src="{player_avatar}" class="img-circle" alt="Responsive image" />
+    </div>
+    <div class="col-md-6">
         <h5>Instructions:</h5>
         <p>1) Login or Register and be eligible to play in the stock exchange!</p>
         <p>2) Go the your portfolio page and click on stocks to buy or sell!</p>

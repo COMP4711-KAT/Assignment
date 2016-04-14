@@ -221,13 +221,15 @@ class Transactions extends MY_Model {
             fclose($handle);
         }
 
-        for ($i = 0; $i < count($assocData); $i ++) {
-            if($assocData[$i]["code"] == $stock[0]["code"]) {
-                array_push($filtered_array, $assocData[$i]);
-            }
+        if(count($assocData) != 0) {
+            for ($i = 0; $i < count($assocData); $i++) {
+                if ($assocData[$i]["code"] == $stock[0]["code"]) {
+                    array_push($filtered_array, $assocData[$i]);
+                }
 
-            if(count($filtered_array) >= 10) {
-                break;
+                if (count($filtered_array) >= 10) {
+                    break;
+                }
             }
         }
 

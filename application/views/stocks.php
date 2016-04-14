@@ -1,5 +1,24 @@
 <div class="row">
     <div class="col-md-4">
+        <h1>Active Stocks</h1>
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Value</th>
+                <th>Link</th>
+            </tr>
+            {stocks_list}
+            <tr>
+                <td>{name}</td>
+                <td>{category}</td>
+                <td>{value}</td>
+                <td><a href="/stock/{code}">Stock History</a></td>
+            </tr>
+            {/stocks_list}
+        </table>
+    </div>
+    <div class="col-md-4">
         <div class="dropdown">
             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 Select Stock

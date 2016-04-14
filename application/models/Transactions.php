@@ -97,6 +97,11 @@ class Transactions extends MY_Model {
         return $query->result();
     }
 
+    /**
+     * Gets the list of transactions made by the player
+     * @param $player the player specified
+     * @return array list of transactions by player
+     */
     function get_player_transactions($player) {
         $assocData = array();
         $headerRecord = array();
@@ -119,6 +124,71 @@ class Transactions extends MY_Model {
 
         for ($i = 0; $i < count($assocData); $i ++) {
             if($assocData[$i]["player"] == $player) {
+                array_push($filtered_array, $assocData[$i]);
+            }
+        }
+
+        return $filtered_array;
+    }
+
+    /**
+     * Gets a list of transactions specified by a stock
+     * @param $which the stock to look for
+     * @return array list of stock transactions made by players
+     */
+    function get_stock_transactions($which) {
+
+        $assocData = array();
+        $headerRecord = array();
+        $filtered_array = array();
+        if( ($handle = fopen( "http://bsx.jlparry.com/data/transactions", "r")) !== FALSE) {
+            $rowCounter = 0;
+            while (($rowData = fgetcsv($handle, 0, ",")) !== FALSE) {
+                if( 0 === $rowCounter) {
+                    $headerRecord = $rowData;
+                } else {
+                    foreach( $rowData as $key => $value) {
+                        if($value == "")
+                            $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
+                    }
+                }
+                $rowCounter++;
+            }
+            fclose($handle);
+        }
+
+        for ($i = 0; $i < count($assocData); $i ++) {
+            if($assocData[$i]["stock"] == $which) {
+                array_push($filtered_array, $assocData[$i]);
+            }
+        }
+
+        return $filtered_array;
+    }
+
+    function get_most_recent_transactions_stock() {
+        $CI = & get_instance();
+        $stock = $CI->stocks->get_most_recent_stock();
+        $assocData = array();
+        $headerRecord = array();
+        $filtered_array = array();
+        if( ($handle = fopen( "http://bsx.jlparry.com/data/transactions", "r")) !== FALSE) {
+            $rowCounter = 0;
+            while (($rowData = fgetcsv($handle, 0, ",")) !== FALSE) {
+                if( 0 === $rowCounter) {
+                    $headerRecord = $rowData;
+                } else {
+                    foreach( $rowData as $key => $value) {
+                        $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
+                    }
+                }
+                $rowCounter++;
+            }
+            fclose($handle);
+        }
+
+        for ($i = 0; $i < count($assocData); $i ++) {
+            if($assocData[$i]["code"] == $stock[0]["code"]) {
                 array_push($filtered_array, $assocData[$i]);
             }
         }

@@ -26,7 +26,7 @@ class Welcome extends Application {
         $this->data['pagebody'] = 'homepage';
 
         $this->data['players'] = $this->players->all();
-        $this->data['stockscsv'] = $this->stocks->getCSVStockResults();
+        $this->data['stockscsv'] = $this->stocks->get_stocks();
 
         $this->render();
     }

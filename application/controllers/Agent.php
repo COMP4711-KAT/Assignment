@@ -127,15 +127,26 @@ class Agent extends Application {
 
                 if ($certificates) {
                     $response = $this->bsx->sell_stock($agent->team, $player, $stock, $quantity, $agent->token, $certificates);
+                    if (is_array($response)) {
+                        if (array_key_exists('message', $response)) {
+                            // We sold all of the stocks for this code, just delete from the database
+                            $this->stocks_held->delete_certificates($agent->team, $player, $stock);
 
-                    var_dump($response);
-                    die();
+                            $this->session->set_flashdata('success', $response['message']);
+                        } else {
+                            // update the stocks_held
+                            $this->stocks_held->update_certificates($agent->team, $player, $stock, $response['amount'], $response['token']);
 
-                    // need to also add to transaction history
-                    //$data = array('DateTime' => date(), 'Player' => $player, 'Stock' => $stock, 'Quantity' => $quantity, 'Trans' => 'buy');
-                    //$this->transactions->add($data);
+                            // need to also add to transaction history
+                            $data = array('DateTime' => date(), 'Player' => $player, 'Stock' => $stock, 'Quantity' => $quantity, 'Trans' => 'sell');
+                            $this->transactions->add($data);
 
-                    $this->session->set_flashdata('success', 'Stock sold successfully.');
+                            $this->session->set_flashdata('success', 'Stock sold successfully.');
+                        }
+                    } else {
+                        // The server is broken (AGAIN). Just give an innocent error message
+                        $this->session->set_flashdata('message', 'Something went wrong. The server is probably broken.');
+                    }
                 }
             }
         }

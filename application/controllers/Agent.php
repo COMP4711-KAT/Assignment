@@ -132,7 +132,7 @@ class Agent extends Application {
                             // We sold all of the stocks for this code, just delete from the database
                             $this->stocks_held->delete_certificates($agent->team, $player, $stock);
 
-                            $this->session->set_flashdata('message', $response['message']);
+                            $this->session->set_flashdata('success', $response['message']);
                         } else {
                             // update the stocks_held
                             $this->stocks_held->update_certificates($agent->team, $player, $stock, $response['amount'], $response['token']);

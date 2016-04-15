@@ -22,6 +22,9 @@ class Application extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->library('bsx');
+        $this->load->model('agents');
+
 		$this->data = array();
 		$this->data['title'] = 'Stock Ticker';	// our default title
 		$this->errors = array();
@@ -48,6 +51,23 @@ class Application extends CI_Controller {
 	 */
 	function render()
 	{
+		// Get the current game status so we can display it at the top of the page
+        $status = $this->bsx->get_status();
+        $this->data['game_status'] = "<div class='alert alert-info'><b>Round " . $status->round ."!</b> The stock exchange is " . $status->desc ." for " . $status->countdown . " more seconds.</div>";
+
+        // Check the agents last round to see if we need to reset game data
+        $agent = $this->agents->get(1);
+        if ($agent != null) {
+            if ($agent->round != $status->round) {
+                // Reset the game
+                $this->bsx->reset_game();
+
+                // Update the agents round
+                $agent->round = $status->round;
+                $this->agents->update($agent);
+            }
+        }
+
 		// Show an error message if we have one
 		if ($this->session->userdata('message') != null) {
 			$this->data['message'] = "<div class='alert alert-danger'>" . $this->session->userdata('message') ."</div>";

@@ -1,5 +1,8 @@
 <?php
 
+//set timezone
+date_default_timezone_set(America/Vancouver);
+
 /**
  * This is the agent controller that is used to interact with the BSX server.
  * Class Agent
@@ -82,6 +85,7 @@ class Agent extends Application {
      * Both buy and sell stock from the BSX. The specific action is determined by which submit button what pressed.
      */
     function exchange() {
+        $date = date('Y-m-d H:i:s');
         // If the user is not logged in, redirect to home
         if ($this->session->userdata('user') == null) {
             redirect('/');
@@ -112,7 +116,7 @@ class Agent extends Application {
                         $this->stocks_held->add($response);
 
                         // need to also add to transaction history
-                        $data = array('DateTime' => date(), 'Player' => $player, 'Stock' => $stock, 'Quantity' => $quantity, 'Trans' => 'buy');
+                        $data = array('DateTime' => $date, 'Player' => $player, 'Stock' => $stock, 'Quantity' => $quantity, 'Trans' => 'buy');
                         $this->transactions->add($data);
 
                         //deduct cash from player

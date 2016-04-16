@@ -13,6 +13,7 @@ class Bsx {
         $this->_ci->load->model('agents');
         $this->_ci->load->model('transactions');
         $this->_ci->load->model('stocks_held');
+        $this->_ci->load->model('players');
         $this->_ci->load->library('rest');
         $this->_ci->rest->initialize(array('server' => 'http://bsx.jlparry.com'));
     }
@@ -116,5 +117,11 @@ class Bsx {
     public function reset_game() {
         $this->_ci->db->empty_table('stocks_held');
         $this->_ci->db->empty_table('transactions');
+        $players = $this->_ci->players->all();
+
+        foreach($players as $player) {
+            $player->Cash = 5000;
+            $this->_ci->players->update($player);
+        }
     }
 }

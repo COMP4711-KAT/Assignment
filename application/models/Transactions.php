@@ -13,37 +13,11 @@ class Transactions extends MY_Model {
     }
 
     /**
-     * Returns an array of objects in descending order
-     * @param $what the column of the table
-     * @param $which the value to find in column
-     * @return mixed array of objects
-     */
-    function some_desc($what, $which) {
-        $this->db->order_by('DateTime', 'desc');
-        if (($what == 'period') && ($which < 9)) {
-            $this->db->where($what, $which); // special treatment for period
-        } else
-            $this->db->where($what, $which);
-        $query = $this->db->get($this->_tableName);
-        return $query->result();
-    }
-
-    /**
-     * Using the movements recent method to get recently moved stock
-     * in order to get the transactions related to that stock that
-     * is made by the users.
-     * @return mixed an array of objects
-     */
-    function some_recent() {
-        $CI = & get_instance();
-        $stock = $CI->movements->recent();
-        $this->db->order_by('DateTime', 'desc');
-        $this->db->where('Stock', $stock[0]->Code); // special treatment for period
-        $query = $this->db->get($this->_tableName);
-        return $query->result();
-    }
-
-    /**
+     * AMANDA change this to getting stocks from the database
+     * *Go to phpmyadmin go to stockticker->transactions table thats where we
+     * are going to get our values so this function needs to change into ones like in MY_MODEL
+     * THANKS GOOD LUCK!
+     *
      * Gets the list of transactions made by the player
      * @param $player the player specified
      * @return array list of transactions by player
@@ -59,8 +33,7 @@ class Transactions extends MY_Model {
                     $headerRecord = $rowData;
                 } else {
                     foreach( $rowData as $key => $value) {
-                        if($value == "")
-                            $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
+                        $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
                     }
                 }
                 $rowCounter++;
@@ -68,9 +41,11 @@ class Transactions extends MY_Model {
             fclose($handle);
         }
 
-        for ($i = 0; $i < count($assocData); $i ++) {
-            if($assocData[$i]["player"] == $player) {
-                array_push($filtered_array, $assocData[$i]);
+        if(count($assocData) != 0) {
+            for ($i = count($assocData) - 1; $i >= 0; $i--) {
+                if($assocData[$i]['player'] == $player) {
+                    array_push($filtered_array, $assocData[$i]);
+                }
             }
         }
 
@@ -94,7 +69,6 @@ class Transactions extends MY_Model {
                     $headerRecord = $rowData;
                 } else {
                     foreach( $rowData as $key => $value) {
-                        if($value == "")
                             $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
                     }
                 }
@@ -114,7 +88,7 @@ class Transactions extends MY_Model {
 
     function get_most_recent_transactions_stock() {
         $CI = & get_instance();
-        $stock = $CI->stocks->get_most_recent_stock();
+        $stock = $CI->movements->get_most_recent_stock();
         $assocData = array();
         $headerRecord = array();
         $filtered_array = array();
@@ -134,7 +108,7 @@ class Transactions extends MY_Model {
         }
 
         for ($i = 0; $i < count($assocData); $i ++) {
-            if($assocData[$i]["code"] == $stock[0]["code"]) {
+            if($assocData[$i]["stock"] == $stock[0]["code"]) {
                 array_push($filtered_array, $assocData[$i]);
             }
         }
@@ -147,8 +121,6 @@ class Transactions extends MY_Model {
      * @return array list of most recent transactions
      */
     function get_most_recent_transactions_stock_home() {
-        $CI = & get_instance();
-        $stock = $CI->stocks->get_most_recent_stock();
         $assocData = array();
         $headerRecord = array();
         $filtered_array = array();
@@ -168,10 +140,8 @@ class Transactions extends MY_Model {
         }
 
         if(count($assocData) != 0) {
-            for ($i = 0; $i < count($assocData); $i++) {
-                if ($assocData[$i]["code"] == $stock[0]["code"]) {
-                    array_push($filtered_array, $assocData[$i]);
-                }
+            for ($i = count($assocData) - 1; $i >= 0; $i--) {
+                array_push($filtered_array, $assocData[$i]);
 
                 if (count($filtered_array) >= 10) {
                     break;

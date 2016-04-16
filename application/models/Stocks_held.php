@@ -11,6 +11,21 @@ class Stocks_held extends MY_Model {
         parent::__construct('stocks_held', 'id');
     }
 
+    function get_player_stocks($player) {
+        $query = $this->db->get_where($this->_tableName, array('player' => $player));
+
+        if ($query->num_rows() < 1)
+            return false;
+
+        $certificates = array();
+        foreach($query->result() as $row) {
+            array_push($certificates, $row);
+        }
+
+        return $certificates;
+    }
+
+
     /**
      * Returns an array of certificates for a certain stock (if it exists).
      *

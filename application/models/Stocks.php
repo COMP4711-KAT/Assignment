@@ -37,17 +37,12 @@ class Stocks extends MY_Model {
         return $assocData;
     }
 
-    /**
-     * Gets the most recent stock
-     * @return array most recent stock
-     */
-    function get_most_recent_stock() {
-        $max = -1;
+    function get_single_stock($which) {
+        $filtered_array = array();
         $assocData = array();
         $headerRecord = array();
-        $filtered_array = array();
-        $index_of_recent = 0;
-        if( ($handle = fopen( "http://bsx.jlparry.com/data/movement", "r")) !== FALSE) {
+        $single_stock = null;
+        if( ($handle = fopen( "http://bsx.jlparry.com/data/stocks", "r")) !== FALSE) {
             $rowCounter = 0;
             while (($rowData = fgetcsv($handle, 0, ",")) !== FALSE) {
                 if( 0 === $rowCounter) {
@@ -63,14 +58,13 @@ class Stocks extends MY_Model {
         }
 
         for ($i = 0; $i < count($assocData); $i ++) {
-            if($assocData[$i]["datetime"] > $max) {
-                $max = $assocData[$i]["datetime"];
-                $index_of_recent = $i;
+            if($assocData[$i]["code"] == $which) {
+                array_push($filtered_array, $assocData[$i]);
+                break;
             }
         }
 
-        array_push($filtered_array, $assocData[$index_of_recent]);
-
-        return $filtered_array;
+        $single_stock = $filtered_array[0];
+        return $single_stock;
     }
 }

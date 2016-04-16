@@ -42,14 +42,42 @@ class Movements extends MY_Model {
     }
 
     /**
-     * Returns a row of the recently moved stock.
-     * @return mixed an array containing one object
+     * Gets the most recent stock
+     * @return array most recent stock
      */
-    function recent() {
-        $this->db->order_by($this->_keyField, 'desc');
-        $this->db->limit(1);
-        $query = $this->db->get($this->_tableName);
-        return $query->result();
+    public function get_most_recent_stock() {
+        $max = -1;
+        $assocData = array();
+        $headerRecord = array();
+        $filtered_array = array();
+        $index_of_recent = 0;
+        if( ($handle = fopen( "http://bsx.jlparry.com/data/movement", "r")) !== FALSE) {
+            $rowCounter = 0;
+            while (($rowData = fgetcsv($handle, 0, ",")) !== FALSE) {
+                if( 0 === $rowCounter) {
+                    $headerRecord = $rowData;
+                } else {
+                    foreach( $rowData as $key => $value) {
+                        $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
+                    }
+                }
+                $rowCounter++;
+            }
+            fclose($handle);
+        }
+
+        if(count($assocData) != 0) {
+            for ($i = 0; $i < count($assocData); $i ++) {
+                if($assocData[$i]["datetime"] > $max) {
+                    $max = $assocData[$i]["datetime"];
+                    $index_of_recent = $i;
+                }
+            }
+
+            array_push($filtered_array, $assocData[$index_of_recent]);
+        }
+
+        return $filtered_array;
     }
 
     /**
@@ -92,7 +120,7 @@ class Movements extends MY_Model {
      */
     function get_most_recent_movements_stock() {
         $CI = & get_instance();
-        $stock = $CI->stocks->get_most_recent_stock();
+        $stock = $CI->movements->get_most_recent_stock();
         $assocData = array();
         $headerRecord = array();
         $filtered_array = array();
@@ -125,8 +153,6 @@ class Movements extends MY_Model {
      * @return array list of stocks that was most recent
      */
     function get_most_recent_movements_stock_home() {
-        $CI = & get_instance();
-        $stock = $CI->stocks->get_most_recent_stock();
         $assocData = array();
         $headerRecord = array();
         $filtered_array = array();
@@ -146,10 +172,8 @@ class Movements extends MY_Model {
         }
 
         if(count($assocData) != 0) {
-            for ($i = 0; $i < count($assocData); $i ++) {
-                if($assocData[$i]["code"] == $stock[0]["code"]) {
-                    array_push($filtered_array, $assocData[$i]);
-                }
+            for ($i = count($assocData) - 1; $i >= 0; $i --) {
+                array_push($filtered_array, $assocData[$i]);
 
                 if(count($filtered_array) >= 10) {
                     break;

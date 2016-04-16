@@ -16,6 +16,7 @@ class Agent extends Application {
         $this->load->model('stocks');
         $this->load->model('transactions');
         $this->load->model('stocks_held');
+        $this->load->model('players');
         $this->load->library('bsx');
     }
 
@@ -85,13 +86,12 @@ class Agent extends Application {
         if ($this->session->userdata('user') == null) {
             redirect('/');
         }
-
         // buy is true if BUY button was pressed, else it's false and we are SELLING
         $buy      = isset($_POST['buy']);
         $stock    = $this->input->post('stock');
         $quantity = $this->input->post('quantity');
         $player   = $this->session->userdata('user')['name'];
-
+        $stockValue = $this->input->post('value');
         // This both registers the agent and makes sure the game is open
         if ($this->bsx->register_agent()) {
             if ($this->bsx->get_status()->state != 3) {
@@ -115,6 +115,11 @@ class Agent extends Application {
                         $data = array('DateTime' => date(), 'Player' => $player, 'Stock' => $stock, 'Quantity' => $quantity, 'Trans' => 'buy');
                         $this->transactions->add($data);
 
+                        //deduct cash from player
+                        $currentPlayer = $this->players->get($this->session->userdata('user')['userId']);
+                        $currentPlayer->Cash = $currentPlayer->Cash - ($quantity * $stockValue);
+                        $this->players->update($currentPlayer);
+
                         $this->session->set_flashdata('success', 'Stock purchased successfully.');
                     }
                 } else {
@@ -128,6 +133,13 @@ class Agent extends Application {
                 if ($certificates) {
                     $response = $this->bsx->sell_stock($agent->team, $player, $stock, $quantity, $agent->token, $certificates);
                     if (is_array($response)) {
+
+                        //add cash to player
+                        $currentPlayer = $this->players->get($this->session->userdata('user')['userId']);
+                        $currentPlayer->Cash = $currentPlayer->Cash + ($quantity * $stockValue);
+                        $this->players->update($currentPlayer);
+
+
                         if (array_key_exists('message', $response)) {
                             // We sold all of the stocks for this code, just delete from the database
                             $this->stocks_held->delete_certificates($agent->team, $player, $stock);

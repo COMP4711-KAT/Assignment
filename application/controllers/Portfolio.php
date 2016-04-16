@@ -19,6 +19,7 @@ class Portfolio extends Application {
         $this->load->model('transactions');
         $this->load->model('players');
         $this->load->model('stocks');
+        $this->load->model('stocks_held');
         $this->load->library('form_validation');
     }
 
@@ -32,20 +33,27 @@ class Portfolio extends Application {
      */
     function index() {
 
-        //If there is no user logged in
+        //If there is no user logged in just picks a random profile from database
         if($this->session->userdata('user') == null) {
-            $this->data['pageTitle'] = 'Profile of Donald' ;
+            $players = $this->players->all();
+            $randomNumber = rand(0, count($players) - 1);
+            $player = $players[$randomNumber];
+
+            $this->data['pageTitle'] = 'Profile of ' . $player->Player ;
             // this is the view we want shown
             $this->data['pagebody'] = 'profile';
 
             //Data to fill in dropdown menu
-            $this->data['player_names'] = $this->players->all();
+            $this->data['player_names'] = $players;
 
-            //Data to fill transactions table, Donald for now
-            $this->data['players'] = $this->transactions->some("Player", 'Donald');
+            $this->data['transactions'] = $this->transactions->get_player_transactions($player);
 
             //Player's current holdings in each stock, Donald for now
             $this->data['stocks']= $this->stocks->get_stocks();
+
+            $this->data['cash'] = $player->Cash;
+
+            $this->data['stocks_held'] = $this->stocks_held->get_player_stocks($player->Player);
 
             $this->render();
         } else {
@@ -59,6 +67,8 @@ class Portfolio extends Application {
      */
     function one($player) {
         $name = ucfirst($player);
+        $currentPlayer = $this->players->get_player($player);
+
         $this->data['pageTitle'] = 'Profile of ' . $name;
 
         // this is the view we want shown
@@ -70,8 +80,14 @@ class Portfolio extends Application {
         //Data to fill transactions table
         $this->data['transactions'] = $this->transactions->get_player_transactions($player);
 
-        //Player's current holdings in each stock
+        //Active Stocks
         $this->data['stocks']= $this->stocks->get_stocks();
+
+        //get current player
+        $this->data['cash'] = $currentPlayer->Cash;
+
+        //Player's current holdings in each stock
+        $this->data['stocks_held'] = $this->stocks_held->get_player_stocks($player);
 
         $this->render();
     }
@@ -96,7 +112,7 @@ class Portfolio extends Application {
         $player = $this->players->get($userId);
         if ($player != null && password_verify($this->input->post('Password'), $player->Password)) {
             $this->session->set_userdata('user'
-                    , ["name"=>$player->Player, "avatar"=>$player->Avatar, "role"=>$player->UserRole]);
+                    , ["name"=>$player->Player, "avatar"=>$player->Avatar, "role"=>$player->UserRole, "userId"=>$userId]);
             redirect('/welcome');
         } else {
             $this->session->set_flashdata('message', 'Incorrect Username or Password.');
@@ -131,7 +147,7 @@ class Portfolio extends Application {
             $user['UserId'] = $this->input->post('UserId');
             $user['Player'] = $this->input->post('Player');
             $user['Password'] = password_hash($this->input->post('Password'), PASSWORD_DEFAULT);
-            $user['Cash'] = 0;
+            $user['Cash'] = 5000;
             $user['UserRole'] = 'user';
             if (!file_exists('./data/avatars')) {
                 mkdir('./data/avatars', 0777, true);

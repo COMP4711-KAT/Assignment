@@ -38,6 +38,7 @@ class Portfolio extends Application {
             $players = $this->players->all();
             $randomNumber = rand(0, count($players) - 1);
             $player = $players[$randomNumber];
+            $stocks_held = $this->stocks_held->get_player_stocks($player->Player);
 
             $this->data['pageTitle'] = 'Profile of ' . $player->Player ;
             // this is the view we want shown
@@ -48,12 +49,18 @@ class Portfolio extends Application {
 
             $this->data['transactions'] = $this->transactions->get_player_transactions($player);
 
-            //Player's current holdings in each stock, Donald for now
+            //active stocks
             $this->data['stocks']= $this->stocks->get_stocks();
 
             $this->data['cash'] = $player->Cash;
 
-            $this->data['stocks_held'] = $this->stocks_held->get_player_stocks($player->Player);
+            if($stocks_held == null) {
+                $this->data['stocks_held'] = array(array("stock" => '', "amount" => ''));
+
+            } else {
+                $this->data['stocks_held'] = $stocks_held;
+            }
+
 
             $this->render();
         } else {
@@ -68,6 +75,7 @@ class Portfolio extends Application {
     function one($player) {
         $name = ucfirst($player);
         $currentPlayer = $this->players->get_player($player);
+        $stocks_held = $this->stocks_held->get_player_stocks($player);
 
         $this->data['pageTitle'] = 'Profile of ' . $name;
 
@@ -87,7 +95,11 @@ class Portfolio extends Application {
         $this->data['cash'] = $currentPlayer->Cash;
 
         //Player's current holdings in each stock
-        $this->data['stocks_held'] = $this->stocks_held->get_player_stocks($player);
+        if($stocks_held == null) {
+            $this->data['stocks_held'] = array(array("stock" => '', "amount" => ''));
+        } else {
+            $this->data['stocks_held'] = $stocks_held;
+        }
 
         $this->render();
     }

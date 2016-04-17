@@ -40,9 +40,7 @@
         <h1>History of Transactions</h1>
         <table class="table">
             <tr>
-                <th>Sequence</th>
                 <th>Date & Time</th>
-                <th>Agent</th>
                 <th>Player</th>
                 <th>Stock</th>
                 <th>Transaction</th>
@@ -50,13 +48,11 @@
             </tr>
             {transactions}
             <tr>
-                <td>{seq}</td>
-                <td>{datetime}</td>
-                <td>{agent}</td>
-                <td>{player}</td>
-                <td>{stock}</td>
-                <td>{trans}</td>
-                <td>{quantity}</td>
+                <td>{DateTime}</td>
+                <td>{Player}</td>
+                <td>{Stock}</td>
+                <td>{Trans}</td>
+                <td>{Quantity}</td>
             </tr>
             {/transactions}
         </table>

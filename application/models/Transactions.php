@@ -24,10 +24,8 @@ class Transactions extends MY_Model {
 
         if($query->num_rows() != 0){
             return $query->result_array();
-
-        }
-        else{
-            echo "No results";
+        } else {
+            return null;
         }
     }
 

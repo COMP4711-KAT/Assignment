@@ -35,9 +35,11 @@ class Application extends CI_Controller {
 		if ($this->session->userdata('user') !== null) {
 			if ($this->session->userdata('user')['role'] == ROLE_ADMIN) {
 				$navbar['menudata'][3] = array('name' => 'Agent Management', 'link' => '/agent');
-				$navbar['menudata'][4] = array('name' => 'Logout', 'link' => '/logout');
+				$navbar['menudata'][4] = array('name' => 'Game', 'link' => '/game');
+				$navbar['menudata'][5] = array('name' => 'Logout', 'link' => '/logout');
 			} else {
-				$navbar['menudata'][3] = array('name' => 'Logout', 'link' => '/logout');
+				$navbar['menudata'][3] = array('name' => 'Game', 'link' => '/game');
+				$navbar['menudata'][4] = array('name' => 'Logout', 'link' => '/logout');
 			}
 		} else {
 			$navbar['menudata'][3] = array('name' => 'Login', 'link' => '/login');

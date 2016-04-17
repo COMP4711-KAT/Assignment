@@ -51,8 +51,7 @@ class Welcome extends Application {
         if(isset($user)) {
             $this->data['player_name'] = $user['name'];
             if ($user['avatar'] != null) {
-                $image = base64_encode($user['avatar']);
-                $this->data['player_avatar'] = "data:image/jpeg;base64," . $image;
+                $this->data['player_avatar'] = "/data/avatars/" . $user['avatar'];
             } else {
                 $this->data['player_avatar'] = "http://fanexpovancouver.com/wp-content/uploads/2013/12/550w_soaps_silhouettesm.jpg";
             }

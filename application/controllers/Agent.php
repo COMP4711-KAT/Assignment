@@ -167,6 +167,6 @@ class Agent extends Application {
             }
         }
 
-        redirect('/profile');
+        redirect('/game');
     }
 }

@@ -45,6 +45,8 @@ class Portfolio extends Application {
             //Player's current holdings in each stock, Donald for now
             $this->data['stocks']= $this->transactions->get_player_stocks("Player", 'Donald');
 
+            $this->data['transactions'] = $this->transactions->get_player_transactions("Donald");
+
             $this->render();
         } else {
             $this -> one($this->session->userdata('user')["name"]);

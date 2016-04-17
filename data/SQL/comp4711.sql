@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 17, 2016 at 11:14 AM
+-- Generation Time: Apr 17, 2016 at 11:33 AM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `stockticker`
+-- Database: `comp4711`
 --
 
 -- --------------------------------------------------------
@@ -40,7 +40,7 @@ CREATE TABLE `agents` (
 --
 
 INSERT INTO `agents` (`id`, `team`, `name`, `frequency`, `token`, `round`) VALUES
-(1, 'S01', 'Kat', 30, '2dc171ef27bb7107f7b0c6afc410414b', 309);
+(1, 'S01', 'Kat', 30, '2dc171ef27bb7107f7b0c6afc410414b', 310);
 
 -- --------------------------------------------------------
 

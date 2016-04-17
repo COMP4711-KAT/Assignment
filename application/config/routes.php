@@ -58,3 +58,5 @@ $route['stock'] = 'stock';
 $route['stock/(:any)'] = 'stock/history/$1';
 $route['login'] = 'portfolio/login';
 $route['logout'] = 'portfolio/logout';
+$route['register'] = 'portfolio/register';
+$route['game'] = 'game/index';

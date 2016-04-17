@@ -1,5 +1,26 @@
 <div class="row">
     <div class="col-md-4">
+        <h1>Active Stocks</h1>
+        <table class="table">
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Value</th>
+                <th>Link</th>
+            </tr>
+            {stocks_list}
+            <tr>
+                <td>{code}</td>
+                <td>{name}</td>
+                <td>{category}</td>
+                <td>{value}</td>
+                <td><a href="/stock/{code}">Stock History</a></td>
+            </tr>
+            {/stocks_list}
+        </table>
+    </div>
+    <div class="col-md-4">
         <div class="dropdown">
             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 Select Stock
@@ -7,11 +28,12 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                 {stocks_list}
-                <li><a href="/stock/{Code}">{Code}</a></li>
+                <li><a href="/stock/{code}">{name}</a></li>
                 {/stocks_list}
             </ul>
         </div>
     </div>
+
 </div>
 
 <div class="row">
@@ -19,19 +41,21 @@
         <h1>History of Stocks</h1>
         <table class="table">
             <tr>
+                <th>Sequence</th>
                 <th>Date & Time</th>
                 <th>Code</th>
                 <th>Action</th>
                 <th>Amount</th>
             </tr>
-            {stocks}
+            {movement}
             <tr>
-                <td>{Datetime}</td>
-                <td>{Code}</td>
-                <td>{Action}</td>
-                <td>{Amount}</td>
+                <td>{seq}</td>
+                <td>{datetime}</td>
+                <td>{code}</td>
+                <td>{action}</td>
+                <td>{amount}</td>
             </tr>
-            {/stocks}
+            {/movement}
         </table>
     </div>
 
@@ -42,19 +66,27 @@
         <h1>Transactions</h1>
         <table class="table">
             <tr>
-                <th>Datetime</th>
+                <th>Sequence</th>
+                <th>Date & Time</th>
+                <th>Agent</th>
                 <th>Player</th>
-                <th>Trans</th>
+                <th>Stock</th>
+                <th>Transaction</th>
                 <th>Quantity</th>
             </tr>
             {transactions}
             <tr>
-                <td>{DateTime}</td>
-                <td>{Player}</td>
-                <td>{Trans}</td>
-                <td>{Quantity}</td>
+                <td>{seq}</td>
+                <td>{datetime}</td>
+                <td>{agent}</td>
+                <td>{player}</td>
+                <td>{stock}</td>
+                <td>{trans}</td>
+                <td>{quantity}</td>
             </tr>
             {/transactions}
         </table>
+
     </div>
+
 </div>

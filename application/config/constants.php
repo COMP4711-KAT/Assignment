@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+define('PASSWORD', 'tuesday');
+define('ROLE_USER', 'user');
+define('ROLE_ADMIN', 'admin');
 /*
 |--------------------------------------------------------------------------
 | Display Debug backtrace

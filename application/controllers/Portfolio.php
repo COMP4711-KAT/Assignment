@@ -35,6 +35,7 @@ class Portfolio extends Application {
 
         //If there is no user logged in just picks a random profile from database
         if($this->session->userdata('user') == null) {
+            $user = $this->session->user;
             $players = $this->players->all();
             $randomNumber = rand(0, count($players) - 1);
             $player = $players[$randomNumber];
@@ -69,6 +70,8 @@ class Portfolio extends Application {
                 $this->data['transactions'] = $player_transactions;
             }
 
+            $this->data['player_avatar'] = "/data/avatars/" . $user['avatar'];
+
             $this->render();
         } else {
             $this -> one($this->session->userdata('user')["name"]);
@@ -80,6 +83,7 @@ class Portfolio extends Application {
      * @param $player the name of the player
      */
     function one($player) {
+        $user = $this->session->user;
         $name = ucfirst($player);
         $currentPlayer = $this->players->get_player($player);
         $stocks_held = $this->stocks_held->get_player_stocks($player);
@@ -115,6 +119,8 @@ class Portfolio extends Application {
         } else {
             $this->data['stocks_held'] = $stocks_held;
         }
+
+        $this->data['player_avatar'] = "/data/avatars/" . $user['avatar'];
 
         $this->render();
     }

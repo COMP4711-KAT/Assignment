@@ -62,6 +62,8 @@ class Portfolio extends Application {
             }
 
 
+            $this->data['transactions'] = $this->transactions->get_player_transactions("Donald");
+
             $this->render();
         } else {
             $this -> one($this->session->userdata('user')["name"]);

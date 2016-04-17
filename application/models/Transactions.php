@@ -48,8 +48,23 @@ class Transactions extends MY_Model {
                 }
             }
         }
+var_dump($filtered_array);
+        //return $filtered_array;
 
-        return $filtered_array;
+echo "-------------------------------\n";
+
+        $this->db->where("Player", $player);
+        $query = $this->db->get("transactions");
+
+        $filtered_array = (array) $query->result();
+        if($query->num_rows() != 0){
+            var_dump($query->result_array());
+            return $query->result_array();
+
+        }
+        else{
+            echo "No results";
+        }
     }
 
     /**

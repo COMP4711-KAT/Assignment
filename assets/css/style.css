@@ -20,3 +20,8 @@
 .navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover {
     color: #e5edff;
 }
+
+.img-circle {
+    width: 100px;
+    height: 100px;
+}

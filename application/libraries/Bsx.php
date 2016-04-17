@@ -11,8 +11,10 @@ class Bsx {
         $this->_ci =& get_instance();
 
         $this->_ci->load->model('agents');
+        $this->_ci->load->model('transactions');
+        $this->_ci->load->model('stocks_held');
+        $this->_ci->load->model('players');
         $this->_ci->load->library('rest');
-
         $this->_ci->rest->initialize(array('server' => 'http://bsx.jlparry.com'));
     }
 
@@ -58,11 +60,21 @@ class Bsx {
 
             return true;
         } else {
-            $this->_ci->session->set_flashdata('message', "There game is currently closed. Try again later.");
+            $this->_ci->session->set_flashdata('message', "The game is currently closed. Try again later.");
             return false;
         }
     }
 
+    /**
+     * Buys stock on behalf of the player, and returns the response from the server.
+     *
+     * @param $team string team
+     * @param $player string player name
+     * @param $stock string stock code
+     * @param $quantity int quantity to purchase
+     * @param $token string authentication token
+     * @return mixed xml response from the server
+     */
     public function buy_stock($team, $player, $stock, $quantity, $token) {
         $data = array('team' => $team,
                       'player' => $player,
@@ -73,5 +85,43 @@ class Bsx {
         $response = $this->_ci->rest->post('buy', $data);
 
         return $response;
+    }
+
+    /**
+     * Sells stock on behalf of the player, and returns the response from the server.
+     *
+     * @param $team string team
+     * @param $player string player name
+     * @param $stock string stock code
+     * @param $quantity int quantity to sell
+     * @param $token string authentication token
+     * @param $certificate array authentication token
+     * @return mixed xml response from the server
+     */
+    public function sell_stock($team, $player, $stock, $quantity, $token, $certificate) {
+        $data = array('team' => $team,
+                      'player' => $player,
+                      'stock' => $stock,
+                      'quantity' => $quantity,
+                      'token' => $token,
+                      'certificate' => $certificate);
+
+        $response = $this->_ci->rest->post('sell', $data);
+
+        return $response;
+    }
+
+    /**
+     * Deletes all the game data from stocks_held and transaction_history tables.
+     */
+    public function reset_game() {
+        $this->_ci->db->empty_table('stocks_held');
+        $this->_ci->db->empty_table('transactions');
+        $players = $this->_ci->players->all();
+
+        foreach($players as $player) {
+            $player->Cash = 5000;
+            $this->_ci->players->update($player);
+        }
     }
 }

@@ -46,6 +46,8 @@ if (!defined('APPPATH'))
         <div class="container">
             <div id="content">
                 <h1>{pageTitle}</h1>
+                {game_status}
+                {message}
                 {content}
             </div>
             <div id="footer" class="text-center">

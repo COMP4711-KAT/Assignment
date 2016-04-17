@@ -39,6 +39,7 @@ class Portfolio extends Application {
             $randomNumber = rand(0, count($players) - 1);
             $player = $players[$randomNumber];
             $stocks_held = $this->stocks_held->get_player_stocks($player->Player);
+            $player_transactions = $this->transactions->get_player_transactions($player->Player);
 
             $this->data['pageTitle'] = 'Profile of ' . $player->Player ;
             // this is the view we want shown
@@ -46,8 +47,6 @@ class Portfolio extends Application {
 
             //Data to fill in dropdown menu
             $this->data['player_names'] = $players;
-
-            $this->data['transactions'] = $this->transactions->get_player_transactions($player);
 
             //active stocks
             $this->data['stocks']= $this->stocks->get_stocks();
@@ -62,7 +61,13 @@ class Portfolio extends Application {
             }
 
 
-            $this->data['transactions'] = $this->transactions->get_player_transactions("Donald");
+            if($player_transactions == null) {
+                $this->data['transactions'] = array(array
+                ("DateTime" => '', "Player" => '', 'Stock' => '', 'Trans' => '', 'Quantity' => ''));
+
+            } else {
+                $this->data['transactions'] = $player_transactions;
+            }
 
             $this->render();
         } else {
@@ -78,6 +83,7 @@ class Portfolio extends Application {
         $name = ucfirst($player);
         $currentPlayer = $this->players->get_player($player);
         $stocks_held = $this->stocks_held->get_player_stocks($player);
+        $player_transactions = $this->transactions->get_player_transactions($player);
 
         $this->data['pageTitle'] = 'Profile of ' . $name;
 
@@ -88,7 +94,14 @@ class Portfolio extends Application {
         $this->data['player_names'] = $this->players->all();
 
         //Data to fill transactions table
-        $this->data['transactions'] = $this->transactions->get_player_transactions($player);
+
+        if($player_transactions == null) {
+            $this->data['transactions'] = array(array
+            ("DateTime" => '', "Player" => '', 'Stock' => '', 'Trans' => '', 'Quantity' => ''));
+
+        } else {
+            $this->data['transactions'] = $player_transactions;
+        }
 
         //Active Stocks
         $this->data['stocks']= $this->stocks->get_stocks();

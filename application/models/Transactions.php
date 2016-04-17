@@ -13,52 +13,16 @@ class Transactions extends MY_Model {
     }
 
     /**
-     * AMANDA change this to getting stocks from the database
-     * *Go to phpmyadmin go to stockticker->transactions table thats where we
-     * are going to get our values so this function needs to change into ones like in MY_MODEL
-     * THANKS GOOD LUCK!
      *
      * Gets the list of transactions made by the player
      * @param $player the player specified
      * @return array list of transactions by player
      */
     function get_player_transactions($player) {
-        $assocData = array();
-        $headerRecord = array();
-        $filtered_array = array();
-        if( ($handle = fopen( "http://bsx.jlparry.com/data/transactions", "r")) !== FALSE) {
-            $rowCounter = 0;
-            while (($rowData = fgetcsv($handle, 0, ",")) !== FALSE) {
-                if( 0 === $rowCounter) {
-                    $headerRecord = $rowData;
-                } else {
-                    foreach( $rowData as $key => $value) {
-                        $assocData[ $rowCounter - 1][ $headerRecord[ $key] ] = $value;
-                    }
-                }
-                $rowCounter++;
-            }
-            fclose($handle);
-        }
-
-        if(count($assocData) != 0) {
-            for ($i = count($assocData) - 1; $i >= 0; $i--) {
-                if($assocData[$i]['player'] == $player) {
-                    array_push($filtered_array, $assocData[$i]);
-                }
-            }
-        }
-var_dump($filtered_array);
-        //return $filtered_array;
-
-echo "-------------------------------\n";
-
         $this->db->where("Player", $player);
         $query = $this->db->get("transactions");
 
-        $filtered_array = (array) $query->result();
         if($query->num_rows() != 0){
-            var_dump($query->result_array());
             return $query->result_array();
 
         }

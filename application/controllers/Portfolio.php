@@ -70,7 +70,11 @@ class Portfolio extends Application {
                 $this->data['transactions'] = $player_transactions;
             }
 
-            $this->data['player_avatar'] = "/data/avatars/" . $user['avatar'];
+            if ($player->Avatar != null) {
+                $this->data['player_avatar'] = "/data/avatars/" . $player->Avatar;
+            } else {
+                $this->data['player_avatar'] = "http://fanexpovancouver.com/wp-content/uploads/2013/12/550w_soaps_silhouettesm.jpg";
+            }
 
             $this->render();
         } else {
@@ -120,7 +124,11 @@ class Portfolio extends Application {
             $this->data['stocks_held'] = $stocks_held;
         }
 
-        $this->data['player_avatar'] = "/data/avatars/" . $user['avatar'];
+        if ($currentPlayer->Avatar != null) {
+            $this->data['player_avatar'] = "/data/avatars/" . $currentPlayer->Avatar;
+        } else {
+            $this->data['player_avatar'] = "http://fanexpovancouver.com/wp-content/uploads/2013/12/550w_soaps_silhouettesm.jpg";
+        }
 
         $this->render();
     }

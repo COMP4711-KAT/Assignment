@@ -4,15 +4,11 @@
         <form action="/agent/create" method="post">
             <div class="form-group">
                 <label for="team">Team</label>
-                <input class="form-control" type="text" id="team" name="team" value="{team}">
+                <input class="form-control" type="text" id="team" name="team" value="{team}" required>
             </div>
             <div class="form-group">
                 <label for="name">Name</label>
-                <input class="form-control" type="text" id="name" name="name" value="{name}">
-            </div>
-            <div class="form-group">
-                <label for="frequency">Frequency</label>
-                <input class="form-control" type="number" id="frequency" name="frequency" value="{frequency}">
+                <input class="form-control" type="text" id="name" name="name" value="{name}" required>
             </div>
             <button class="btn btn-primary" type="submit">{button}</button>
         </form>

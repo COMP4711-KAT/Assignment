@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-md-4">
         <h2>Player Cash: {cash}</h2>
+        <h2>Player Equity: {equity}</h2>
     </div>
 </div>
 

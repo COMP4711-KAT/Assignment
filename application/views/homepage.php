@@ -71,13 +71,17 @@
         <h1>Players</h1>
         <table class="table">
             <tr>
+                <th></th>
                 <th>Player</th>
                 <th>Cash</th>
+                <th>Equity</th>
             </tr>
             {players}
             <tr>
+                <td><img width="30" src="{Avatar}" /></td>
                 <td><a href="profile/{Player}">{Player}</a></td>
                 <td>{Cash}</td>
+                <td>{Equity}</td>
             </tr>
             {/players}
         </table>

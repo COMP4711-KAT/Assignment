@@ -54,6 +54,8 @@ class Portfolio extends Application {
 
             $this->data['cash'] = $player->Cash;
 
+            $this->data['equity'] = $this->players->get_equity($player->UserId);
+
             if($stocks_held == null) {
                 $this->data['stocks_held'] = array(array("stock" => '', "amount" => ''));
 
@@ -101,7 +103,7 @@ class Portfolio extends Application {
         //Data to fill in dropdown menu
         $this->data['player_names'] = $this->players->all();
 
-        //Data to fill transactions table
+        $this->data['equity'] = $this->players->get_equity($currentPlayer->UserId);
 
         if($player_transactions == null) {
             $this->data['transactions'] = array(array
@@ -194,7 +196,7 @@ class Portfolio extends Application {
                 mkdir('./data/avatars', 0777, true);
             }
             $config['upload_path'] = './data/avatars/';
-            $config['allowed_types'] = 'gif|jpg|png';
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
             $config['encrypt_name'] = true;
             $this->load->library('upload', $config);
             $this->upload->do_upload('Avatar');

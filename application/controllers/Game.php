@@ -1,6 +1,6 @@
 <?php
 /**
- * This is the portfolio(profile) controller used to pass data
+ * This is the game(profile) controller used to pass data
  * to display profile information.
  */
 
@@ -10,7 +10,7 @@ class Game extends Application {
      * Grabs both models to use one for the transactions and
      * since if a player has no transactions, use player model
      * to get player table values to fill in dropdown
-     * Portfolio constructor.
+     * Game constructor.
      */
     function __construct() {
 
@@ -28,14 +28,11 @@ class Game extends Application {
     //-------------------------------------------------------------
 
     /**
-     * Shows the player whose currently logged in and if not logged,
-     * shows Donald. Uses a different pagebody for a user profile as
+     * Shows the player whose currently logged in
      */
     function index() {
-
-        //If there is no user logged in just picks a random profile from database
         if($this->session->userdata('user') == null) {
-
+            redirect('/');
         }
             $this -> one($this->session->userdata('user')["name"]);
 
@@ -56,7 +53,7 @@ class Game extends Application {
         // this is the view we want shown
         $this->data['pagebody'] = 'game';
 
-        //Data to fill transactions table
+        $this->data['equity'] = $this->players->get_equity($currentPlayer->UserId);
 
         if($player_transactions == null) {
             $this->data['transactions'] = array(array

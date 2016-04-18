@@ -1,7 +1,7 @@
 <?php
 
 //set timezone
-date_default_timezone_set(America/Vancouver);
+date_default_timezone_set("America/Vancouver");
 
 /**
  * This is the agent controller that is used to interact with the BSX server.
@@ -67,9 +67,7 @@ class Agent extends Application {
         // Get the POST data
         $team      = $this->input->post('team');
         $name      = $this->input->post('name');
-        $frequency = $this->input->post('frequency');
-
-        $agent = array('id' => 1, 'team' => $team, 'name' => $name, 'frequency' => $frequency);
+        $agent = array('id' => 1, 'team' => $team, 'name' => $name);
 
         // If there is no agent, create it. Otherwise, update the existing one. (There's only ever one agent).
         if ($this->agents->get(1) == null) {
@@ -154,7 +152,7 @@ class Agent extends Application {
                             $this->stocks_held->update_certificates($agent->team, $player, $stock, $response['amount'], $response['token']);
 
                             // need to also add to transaction history
-                            $data = array('DateTime' => date(), 'Player' => $player, 'Stock' => $stock, 'Quantity' => $quantity, 'Trans' => 'sell');
+                            $data = array('DateTime' => $date, 'Player' => $player, 'Stock' => $stock, 'Quantity' => $quantity, 'Trans' => 'sell');
                             $this->transactions->add($data);
 
                             $this->session->set_flashdata('success', 'Stock sold successfully.');

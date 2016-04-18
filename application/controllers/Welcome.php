@@ -13,6 +13,7 @@ class Welcome extends Application {
     function __construct() {
         parent::__construct();
 
+        $this->load->model('players');
         $this->load->model('stocks');
         $this->load->model('movements');
         $this->load->model('transactions');
@@ -64,6 +65,23 @@ class Welcome extends Application {
         $this->data['stockscsv'] = $this->stocks->get_stocks();
         $this->data['movement'] = $this->movements->get_most_recent_movements_stock_home();
         $this->data['transactions'] = $this->transactions->get_most_recent_transactions_stock_home();
+
+        // Prepare players for display
+        $players = array();
+        foreach ($this->data['players'] as $player) {
+            // Fix avatar images
+            if ($player->Avatar != null) {
+                $player->Avatar = "/data/avatars/" . $player->Avatar;
+            } else {
+                $player->Avatar = "http://fanexpovancouver.com/wp-content/uploads/2013/12/550w_soaps_silhouettesm.jpg";
+            }
+
+            // Get their equity
+            $player = (array)$player;
+            $player['Equity'] = $this->players->get_equity($player['UserId']);
+            array_push($players, $player);
+        }
+        $this->data['players'] = $players;
 
         $this->render();
     }
